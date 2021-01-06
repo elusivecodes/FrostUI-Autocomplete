@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../FrostUI/dist/frost-ui.css">
+    <link rel="stylesheet" href="dist/frost-ui-autocomplete.css">
+    <script src="../FrostUI/dist/frost-ui-bundle.js"></script>
+    <script src="dist/frost-ui-autocomplete.js"></script>
+</head>
+
+<body>
+    <div class="container pt-5">
+        <div class="mb-4">
+            <label for="selectDefault">Default</label>
+            <div class="form-input">
+                <input class="input-filled" type="text" id="autocompleteDefault" />
+                <div class="ripple-line"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const autocompleteDefault = dom.findOne('#autocompleteDefault');
+
+        UI.Autocomplete.init(autocompleteDefault, {
+            data: ['Test 1', 'Test 2', 'Test 3', 'Test 4']
+        });
+    </script>
+</body>
+
+</html>
