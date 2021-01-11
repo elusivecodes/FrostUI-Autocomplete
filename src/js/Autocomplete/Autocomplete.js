@@ -13,9 +13,6 @@ class Autocomplete extends UI.BaseComponent {
     constructor(node, settings) {
         super(node, settings);
 
-        this._enabled = !dom.is(this._node, ':disabled');
-        this._readonly = dom.hasAttribute(this._node, 'readonly');
-
         this._data = [];
 
         this._getData = null;
@@ -39,11 +36,11 @@ class Autocomplete extends UI.BaseComponent {
     }
 
     /**
-     * Disable the Autocomplete.
+     * Disable the Autocomplete input.
      * @returns {Autocomplete} The Autocomplete.
      */
     disable() {
-        this._enabled = false;
+        dom.setAttribute(this._node, 'disabled', true);
 
         return this;
     }
@@ -71,11 +68,11 @@ class Autocomplete extends UI.BaseComponent {
     }
 
     /**
-     * Enable the Autocomplete.
+     * Enable the Autocomplete input.
      * @returns {Autocomplete} The Autocomplete.
      */
     enable() {
-        this._enabled = true;
+        dom.removeAttribute(this._node, 'disabled');
 
         return this;
     }
@@ -115,10 +112,9 @@ class Autocomplete extends UI.BaseComponent {
      */
     show() {
         if (
-            !this._enabled ||
-            this._readonly ||
             this._animating ||
-            dom.is(this._node, ':disabled') ||
+            !dom.is(this._node, ':disabled') ||
+            dom.hasAttribute(this._node, 'readonly') ||
             dom.isConnected(this._menuNode) ||
             !dom.triggerOne(this._node, 'show.ui.autocomplete')
         ) {
