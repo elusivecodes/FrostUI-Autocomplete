@@ -93,7 +93,7 @@ class Autocomplete extends UI.BaseComponent {
     show() {
         if (
             this._animating ||
-            !dom.is(this._node, ':disabled') ||
+            dom.is(this._node, ':disabled') ||
             dom.hasAttribute(this._node, 'readonly') ||
             dom.isConnected(this._menuNode) ||
             !dom.triggerOne(this._node, 'show.ui.autocomplete')

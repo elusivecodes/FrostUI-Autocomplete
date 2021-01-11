@@ -123,7 +123,7 @@
         show() {
             if (
                 this._animating ||
-                !dom.is(this._node, ':disabled') ||
+                dom.is(this._node, ':disabled') ||
                 dom.hasAttribute(this._node, 'readonly') ||
                 dom.isConnected(this._menuNode) ||
                 !dom.triggerOne(this._node, 'show.ui.autocomplete')
@@ -194,7 +194,7 @@
                 e.preventDefault();
             });
 
-            dom.addEventDelegate(this._itemsList, 'mouseup.ui.autocomplete', '[data-ui-action="select"]', e => {
+            dom.addEventDelegate(this._itemsList, 'mousedown.ui.autocomplete', '[data-ui-action="select"]', e => {
                 e.preventDefault();
 
                 const value = dom.getDataset(e.currentTarget, 'uiValue');

@@ -13,7 +13,7 @@ Object.assign(Autocomplete.prototype, {
             e.preventDefault();
         });
 
-        dom.addEventDelegate(this._itemsList, 'mouseup.ui.autocomplete', '[data-ui-action="select"]', e => {
+        dom.addEventDelegate(this._itemsList, 'mousedown.ui.autocomplete', '[data-ui-action="select"]', e => {
             e.preventDefault();
 
             const value = dom.getDataset(e.currentTarget, 'uiValue');
