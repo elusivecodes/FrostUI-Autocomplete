@@ -36,16 +36,6 @@ class Autocomplete extends UI.BaseComponent {
     }
 
     /**
-     * Disable the Autocomplete input.
-     * @returns {Autocomplete} The Autocomplete.
-     */
-    disable() {
-        dom.setAttribute(this._node, 'disabled', true);
-
-        return this;
-    }
-
-    /**
      * Dispose the Autocomplete.
      */
     dispose() {
@@ -65,16 +55,6 @@ class Autocomplete extends UI.BaseComponent {
         this._request = null;
 
         super.dispose();
-    }
-
-    /**
-     * Enable the Autocomplete input.
-     * @returns {Autocomplete} The Autocomplete.
-     */
-    enable() {
-        dom.removeAttribute(this._node, 'disabled');
-
-        return this;
     }
 
     /**
