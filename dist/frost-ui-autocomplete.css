@@ -3,21 +3,22 @@
   position: absolute;
   z-index: 1000;
   padding: 0;
-  margin: 0.125rem 0 0;
+  margin: 0;
   font-size: 1rem;
-  color: darkslategray;
+  color: #121212;
   text-align: left;
   list-style: none;
   background-color: white;
   border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 0.2rem;
 }
+
 .autocomplete-items {
   max-height: 250px;
   margin: 0;
   list-style-type: none;
   overflow-y: auto;
 }
+
 .autocomplete-item {
   display: block;
   width: 100%;
@@ -31,21 +32,14 @@
   border: 0;
   cursor: default;
 }
-.autocomplete-item:first-child {
-  border-top-left-radius: inherit;
-  border-top-right-radius: inherit;
+
+.autocomplete-focus, .autocomplete-focus.autocomplete-active {
+  color: #fff;
+  background-color: #2b55d4;
 }
-.autocomplete-item:last-child {
-  border-bottom-left-radius: inherit;
-  border-bottom-right-radius: inherit;
-}
+
 .autocomplete-active {
   color: #121212;
   text-decoration: none;
   background-color: rgba(0, 0, 0, 0.1);
-}
-.autocomplete-focus,
-.autocomplete-focus.autocomplete-active {
-  color: white;
-  background-color: royalblue;
 }

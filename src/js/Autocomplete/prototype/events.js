@@ -14,6 +14,11 @@ Object.assign(Autocomplete.prototype, {
         });
 
         dom.addEventDelegate(this._itemsList, 'mousedown.ui.autocomplete', '[data-ui-action="select"]', e => {
+            // prevent selection from triggering blur event
+            e.preventDefault();
+        });
+
+        dom.addEventDelegate(this._itemsList, 'mouseup.ui.autocomplete', '[data-ui-action="select"]', e => {
             e.preventDefault();
 
             const value = dom.getDataset(e.currentTarget, 'uiValue');

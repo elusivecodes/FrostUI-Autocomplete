@@ -3,22 +3,11 @@ Autocomplete.defaults = {
     data: null,
     getResults: null,
     isMatch: (value, term) => {
+        const normalized = value.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         const escapedTerm = Core.escapeRegExp(term);
         const regExp = new RegExp(escapedTerm, 'i');
 
-        if (regExp.test(value)) {
-            return true;
-        }
-
-        const normalized = term.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        const escapedNormal = Core.escapeRegExp(normalized);
-        const regExpNormal = new RegExp(escapedNormal, 'i');
-
-        if (regExpNormal.test(value)) {
-            return true;
-        }
-
-        return false;
+        return regExp.test(value) || regeExp.test(normalized);
     },
     renderResult: value => value,
     sanitize: input => dom.sanitize(input),
@@ -44,7 +33,7 @@ Autocomplete.defaults = {
     placement: 'bottom',
     position: 'start',
     fixed: false,
-    spacing: 3,
+    spacing: 0,
     minContact: false
 };
 
