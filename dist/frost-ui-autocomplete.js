@@ -578,7 +578,7 @@
         focus: 'autocomplete-focus',
         item: 'autocomplete-item',
         items: 'autocomplete-items',
-        menu: 'autocomplete-menu'
+        menu: 'autocomplete-menu shadow-sm'
     };
 
     UI.initComponent('autocomplete', Autocomplete);
