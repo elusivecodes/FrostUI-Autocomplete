@@ -39,13 +39,13 @@
 .autocomplete-focus {
     &,
     &.autocomplete-active {
-        color: $autocomplete-focus-color;
-        background-color: $autocomplete-focus-background-color;
+        color: $autocomplete-item-focus-color;
+        background-color: $autocomplete-item-focus-background-color;
     }
 }
 
 .autocomplete-active {
-    color: $autocomplete-active-color;
+    color: $autocomplete-item-active-color;
     text-decoration: none;
-    background-color: $autocomplete-active-background-color;
+    background-color: $autocomplete-item-active-background-color;
 }

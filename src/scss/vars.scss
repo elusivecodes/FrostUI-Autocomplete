@@ -45,7 +45,7 @@ $autocomplete-item-padding-y: $spacing / 4 !default;
 $autocomplete-item-font-weight: map-get($font-weights, normal) !default;
 $autocomplete-item-color: $autocomplete-menu-color !default;
 
-$autocomplete-focus-background-color: map-get($color-variants, primary) !default;
-$autocomplete-focus-color: text-color($autocomplete-focus-background-color) !default;
-$autocomplete-active-color: $autocomplete-color !default;
-$autocomplete-active-background-color: fade($black, .1) !default;
+$autocomplete-item-focus-background-color: map-get($color-variants, primary) !default;
+$autocomplete-item-focus-color: text-color($autocomplete-item-focus-background-color) !default;
+$autocomplete-item-active-color: $autocomplete-color !default;
+$autocomplete-item-active-background-color: fade($black, .1) !default;
