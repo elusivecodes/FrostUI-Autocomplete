@@ -1,10 +1,10 @@
-@import 'functions';
-@import 'vars';
+@import "functions";
+@import "vars";
 
 .autocomplete-menu {
-    width: 100%;
     position: absolute;
     z-index: $dropdown-z-index;
+    width: 100%;
     padding: 0;
     margin: 0;
     font-size: $autocomplete-menu-font-size;
@@ -18,8 +18,8 @@
 .autocomplete-items {
     max-height: $autocomplete-items-max-height;
     margin: 0;
-    list-style-type: none;
     overflow-y: auto;
+    list-style-type: none;
 }
 
 .autocomplete-item {
@@ -31,9 +31,9 @@
     color: $autocomplete-item-color;
     text-align: inherit;
     white-space: nowrap;
+    cursor: default;
     background-color: transparent;
     border: 0;
-    cursor: default;
 }
 
 .autocomplete-focus {
