@@ -7,7 +7,7 @@ Autocomplete.defaults = {
         const escapedTerm = Core.escapeRegExp(term);
         const regExp = new RegExp(escapedTerm, 'i');
 
-        return regExp.test(value) || regeExp.test(normalized);
+        return regExp.test(value) || regExp.test(normalized);
     },
     renderResult: value => value,
     sanitize: input => dom.sanitize(input),

@@ -14,18 +14,79 @@
 <body>
     <div class="container pt-5">
         <div class="mb-4">
-            <label for="selectDefault">Default</label>
+            <label for="autocompleteDefault">Default</label>
             <div class="form-input">
-                <input class="input-filled" type="text" id="autocompleteDefault" />
+                <input class="input-filled" type="text" id="autocompleteDefault" placeholder="Placeholder" />
+                <div class="ripple-line"></div>
+            </div>
+        </div>
+        <div class="mb-4">
+            <label for="autoCompleteQuery">Query</label>
+            <div class="form-input">
+                <input class="input-filled" type="text" id="autoCompleteQuery" placeholder="Placeholder" />
+                <div class="ripple-line"></div>
+            </div>
+        </div>
+        <div class="mb-4">
+            <label for="autoCompleteRender">Rendering</label>
+            <div class="form-input">
+                <input class="input-filled" type="text" id="autoCompleteRender" placeholder="Placeholder" />
+                <div class="ripple-line"></div>
+            </div>
+        </div>
+        <div class="mb-4">
+            <label for="autoCompleteDiacratics">Diacratics</label>
+            <div class="form-input">
+                <input class="input-filled" type="text" id="autoCompleteDiacratics" placeholder="Placeholder" />
                 <div class="ripple-line"></div>
             </div>
         </div>
     </div>
     <script>
         const autocompleteDefault = dom.findOne('#autocompleteDefault');
+        const autoCompleteQuery = dom.findOne('#autoCompleteQuery');
+        const autoCompleteRender = dom.findOne('#autoCompleteRender');
+        const autoCompleteDiacratics = dom.findOne('#autoCompleteDiacratics');
+
+        const sampleData = [
+            'Test 1',
+            'Test 2',
+            'Test 3',
+            'Test 4'
+        ];
 
         UI.Autocomplete.init(autocompleteDefault, {
-            data: ['Test 1', 'Test 2', 'Test 3', 'Test 4']
+            data: sampleData
+        });
+
+        UI.Autocomplete.init(autoCompleteQuery, {
+            getResults: ({ term = null }) => {
+                let results;
+
+                results = new Array(20).fill().map((_, i) => `Test ${i + 1}`);
+
+                if (term) {
+                    results = results.filter(result =>
+                        result.toLowerCase().indexOf(term.toLowerCase()) >= 0
+                    );
+                }
+
+                return { results };
+            }
+        });
+
+        UI.Autocomplete.init(autoCompleteRender, {
+            data: sampleData,
+            renderResult: item => `<span class="badge bg-info">${item}</span>`
+        });
+
+        UI.Autocomplete.init(autoCompleteDiacratics, {
+            data: [
+                'Tèst 1',
+                'Tèst 2',
+                'Tèst 3',
+                'Tèst 4'
+            ]
         });
     </script>
 </body>
