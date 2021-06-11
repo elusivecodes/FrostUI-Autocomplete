@@ -41,12 +41,22 @@
                 <div class="ripple-line"></div>
             </div>
         </div>
+        <div class="mb-4">
+            <label for="autocompleteEvents">Events</label>
+            <div class="form-input">
+                <input class="input-filled" type="text" id="autocompleteEvents" placeholder="Placeholder" />
+                <div class="ripple-line"></div>
+            </div>
+            <div id="events"></div>
+        </div>
     </div>
     <script>
         const autocompleteDefault = dom.findOne('#autocompleteDefault');
         const autoCompleteQuery = dom.findOne('#autoCompleteQuery');
         const autoCompleteRender = dom.findOne('#autoCompleteRender');
         const autoCompleteDiacratics = dom.findOne('#autoCompleteDiacratics');
+        const autocompleteEvents = dom.findOne('#autocompleteEvents');
+        const events = dom.findOne('#events');
 
         const sampleData = [
             'Test 1',
@@ -87,6 +97,17 @@
                 'Tèst 3',
                 'Tèst 4'
             ]
+        });
+
+        UI.Autocomplete.init(autocompleteEvents, {
+            data: sampleData
+        });
+
+        dom.addEvent(autocompleteEvents, 'change show shown hide hidden', e => {
+            const div = dom.create('div', {
+                html: `<small>"${e.type}" event triggered</small>`
+            });
+            dom.append(events, div);
         });
     </script>
 </body>
