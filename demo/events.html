@@ -14,12 +14,14 @@
 <body>
     <div class="container pt-5">
         <div class="mb-4">
+            <div class="card mb-2">
+                <div class="card-body py-0 px-2 overflow-auto" id="events" style="height: 100px;"></div>
+            </div>
             <label for="autocompleteEvents">Events</label>
             <div class="form-input">
                 <input class="input-filled" type="text" id="autocompleteEvents" placeholder="Placeholder" />
                 <div class="ripple-line"></div>
             </div>
-            <div id="events"></div>
         </div>
     </div>
     <script>
@@ -40,6 +42,9 @@
                 html: `<small>"${e.type}" event triggered</small>`
             });
             dom.append(events, div);
+
+            const scrollHeight = dom.height(events, DOM.SCROLL_BOX);
+            dom.setScrollY(events, scrollHeight);
         });
     </script>
 </body>
