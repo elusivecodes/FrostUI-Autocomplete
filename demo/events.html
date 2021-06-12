@@ -37,7 +37,7 @@
             ]
         });
 
-        dom.addEvent(autocompleteEvents, 'change.ui.autocomplete show.ui.autocomplete shown.ui.autocomplete hide.ui.autocomplete hidden.ui.autocomplete', e => {
+        dom.addEvent(autocompleteEvents, 'change show.ui.autocomplete shown.ui.autocomplete hide.ui.autocomplete hidden.ui.autocomplete', e => {
             const div = dom.create('div', {
                 html: `<small>"${e.type}" event triggered</small>`
             });

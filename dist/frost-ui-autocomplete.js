@@ -204,7 +204,7 @@
 
                 const value = dom.getDataset(e.currentTarget, 'uiValue');
                 dom.setValue(this._node, value);
-                dom.triggerEvent(this._node, 'change.ui.autocomplete');
+                dom.triggerEvent(this._node, 'change');
                 this.hide();
                 dom.focus(this._node);
             });
@@ -236,7 +236,7 @@
                     if (focusedNode) {
                         const value = dom.getDataset(focusedNode, 'uiValue');
                         dom.setValue(this._node, value);
-                        dom.triggerEvent(this._node, 'change.ui.autocomplete');
+                        dom.triggerEvent(this._node, 'change');
                         this.hide();
                     }
 
