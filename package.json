@@ -1,15 +1,40 @@
 {
     "name": "frostui-autocomplete",
     "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
+    "description": "FrostUI-Autocomplete is a free, open-source Autocomplete component for Javascript.",
+    "keywords": [
+        "ui",
+        "component",
+        "autocomplete",
+        "typeahead",
+        "front-end",
+        "web"
+    ],
+    "homepage": "https://github.com/elusivecodes/FrostUI-Autocomplete",
+    "bugs": {
+        "url": "https://github.com/elusivecodes/FrostUI-Autocomplete/issues",
+        "email": "elusivecodes@gmail.com"
+    },
+    "main": "./dist/frost-ui-autocomplete.js",
+    "files": [
+        "/dist/frost-ui-autocomplete.css",
+        "/dist/frost-ui-autocomplete.js",
+        "/src/scss",
+        "/LICENSE",
+        "/README.md"
+    ],
     "scripts": {
         "build": "node build.js",
         "test": "echo \"Error: no test specified\" && exit 1",
         "lint": "stylelint \"src/scss/**/*.scss\" --fix"
     },
-    "author": "",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/elusivecodes/FrostUI-Autocomplete.git"
+    },
+    "author": "Elusive",
     "license": "MIT",
+    "private": false,
     "devDependencies": {
         "cssnano": "^5.0.6",
         "filepath": "^1.1.0",
