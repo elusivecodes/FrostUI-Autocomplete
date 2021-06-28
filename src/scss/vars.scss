@@ -29,7 +29,7 @@ $dropdown-z-index: 1000 !default;
 
 // autocomplete
 $autocomplete-padding-x: $spacing !default;
-$autocomplete-padding-y: $spacing / 2 !default;
+$autocomplete-padding-y: $spacing * .5 !default;
 $autocomplete-color: $text-color !default;
 
 $autocomplete-menu-font-size: $font-size-md !default;
@@ -41,7 +41,7 @@ $autocomplete-menu-border-color: $border-color !default;
 $autocomplete-items-max-height: 250px !default;
 
 $autocomplete-item-padding-x: $autocomplete-padding-x !default;
-$autocomplete-item-padding-y: $spacing / 4 !default;
+$autocomplete-item-padding-y: $spacing * .25 !default;
 $autocomplete-item-font-weight: map-get($font-weights, normal) !default;
 $autocomplete-item-color: $autocomplete-menu-color !default;
 
