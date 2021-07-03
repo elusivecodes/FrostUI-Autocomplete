@@ -1,5 +1,5 @@
 /**
- * FrostUI-Autocomplete v1.0.1
+ * FrostUI-Autocomplete v1.0.2
  * https://github.com/elusivecodes/FrostUI-Autocomplete
  */
 (function(global, factory) {
@@ -24,7 +24,6 @@
 
     const Core = window.Core;
     const dom = window.dom;
-    const QuerySet = window.QuerySet;
     const UI = window.UI;
     const document = window.document;
 
