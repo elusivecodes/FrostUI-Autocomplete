@@ -50,7 +50,6 @@ class Autocomplete extends UI.BaseComponent {
         this._menuNode = null;
         this._itemsList = null;
         this._data = null;
-        this._lookup = null;
         this._value = null;
         this._request = null;
 

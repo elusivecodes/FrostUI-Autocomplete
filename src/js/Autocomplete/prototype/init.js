@@ -77,17 +77,8 @@ Object.assign(Autocomplete.prototype, {
             this._request = Promise.resolve(request);
 
             this._request.then(response => {
-                const newData = this.constructor._parseData(response.results);
-                this._data.push(...newData);
+                this._data.push(...response.results);
                 this._showMore = response.showMore;
-
-                // update lookup
-                Object.assign(
-                    this._lookup,
-                    this.constructor._parseDataLookup(this._data)
-                );
-
-                return response;
             });
 
             return this._request;

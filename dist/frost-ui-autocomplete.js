@@ -1,5 +1,5 @@
 /**
- * FrostUI-Autocomplete v1.0.2
+ * FrostUI-Autocomplete v1.0.3
  * https://github.com/elusivecodes/FrostUI-Autocomplete
  */
 (function(global, factory) {
@@ -79,7 +79,6 @@
             this._menuNode = null;
             this._itemsList = null;
             this._data = null;
-            this._lookup = null;
             this._value = null;
             this._request = null;
 
@@ -266,11 +265,23 @@
                     }
                 }
 
-                if (focusNode) {
-                    dom.removeClass(focusedNode, this.constructor.classes.focus);
-                    dom.removeDataset(focusedNode, 'uiFocus');
-                    dom.addClass(focusNode, this.constructor.classes.focus);
-                    dom.setDataset(focusNode, 'uiFocus', true);
+                if (!focusNode) {
+                    return;
+                }
+
+                dom.removeClass(focusedNode, this.constructor.classes.focus);
+                dom.removeDataset(focusedNode, 'uiFocus');
+                dom.addClass(focusNode, this.constructor.classes.focus);
+                dom.setDataset(focusNode, 'uiFocus', true);
+
+                const itemsScrollY = dom.getScrollY(this._itemsList);
+                const itemsRect = dom.rect(this._itemsList, true);
+                const nodeRect = dom.rect(focusNode, true);
+
+                if (nodeRect.top < itemsRect.top) {
+                    dom.setScrollY(this._itemsList, itemsScrollY + nodeRect.top - itemsRect.top);
+                } else if (nodeRect.bottom > itemsRect.bottom) {
+                    dom.setScrollY(this._itemsList, itemsScrollY + nodeRect.bottom - itemsRect.bottom);
                 }
             });
 
@@ -412,17 +423,8 @@
                 this._request = Promise.resolve(request);
 
                 this._request.then(response => {
-                    const newData = this.constructor._parseData(response.results);
-                    this._data.push(...newData);
+                    this._data.push(...response.results);
                     this._showMore = response.showMore;
-
-                    // update lookup
-                    Object.assign(
-                        this._lookup,
-                        this.constructor._parseDataLookup(this._data)
-                    );
-
-                    return response;
                 });
 
                 return this._request;
