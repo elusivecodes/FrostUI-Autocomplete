@@ -1,5 +1,5 @@
 /**
- * FrostUI-Autocomplete v1.0.3
+ * FrostUI-Autocomplete v1.0.4
  * https://github.com/elusivecodes/FrostUI-Autocomplete
  */
 (function(global, factory) {
@@ -222,9 +222,7 @@
 
                 if (e.code === 'Escape') {
                     // close the menu
-                    dom.blur(this._node);
-
-                    return;
+                    return dom.blur(this._node);
                 }
 
                 const focusedNode = dom.findOne('[data-ui-focus]', this._itemsList);
@@ -244,9 +242,7 @@
                 e.preventDefault();
 
                 if (!dom.isConnected(this._menuNode)) {
-                    this.show();
-
-                    return;
+                    return this.show();
                 }
 
                 // focus the previous/next item
@@ -263,6 +259,11 @@
                             focusNode = dom.prevAll(focusedNode, '[data-ui-action="select"]').pop();
                             break;
                     }
+                }
+
+                if (!focusedNode && !focusNode) {
+                    const term = dom.getValue(this._node);
+                    return this._getData({ term });
                 }
 
                 if (!focusNode) {
@@ -288,9 +289,8 @@
             // debounced input event
             const getDataDebounced = Core.debounce(term => {
                 // check for minimum length
-                if (this._settings.minLength && term.length < this._settings.minLength) {
-                    dom.hide(this._menuNode);
-                    return;
+                if (this._settings.minSearch && term.length < this._settings.minSearch) {
+                    return dom.hide(this._menuNode);
                 }
 
                 dom.empty(this._itemsList);
@@ -331,14 +331,6 @@
             dom.addEvent(this._node, 'blur.ui.autocomplete', _ => {
                 this.hide();
             });
-
-            dom.addEvent(this._node, 'keydown.ui.autocomplete', e => {
-                if (!/^.$/u.test(e.key)) {
-                    return;
-                }
-
-                this.show();
-            });
         }
 
     });
@@ -366,6 +358,7 @@
                     term
                 ).filter(item => this._settings.isMatch(item, term));
 
+                dom.empty(this._itemsList);
                 this._renderResults(results);
                 this.update();
             };
@@ -561,7 +554,7 @@
 
             return aLower.localeCompare(bLower);
         }),
-        minLength: 1,
+        minSearch: 1,
         debounceInput: 250,
         duration: 100,
         appendTo: null,

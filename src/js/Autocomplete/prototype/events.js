@@ -43,9 +43,7 @@ Object.assign(Autocomplete.prototype, {
 
             if (e.code === 'Escape') {
                 // close the menu
-                dom.blur(this._node);
-
-                return;
+                return dom.blur(this._node);
             }
 
             const focusedNode = dom.findOne('[data-ui-focus]', this._itemsList);
@@ -65,9 +63,7 @@ Object.assign(Autocomplete.prototype, {
             e.preventDefault();
 
             if (!dom.isConnected(this._menuNode)) {
-                this.show();
-
-                return;
+                return this.show();
             }
 
             // focus the previous/next item
@@ -84,6 +80,11 @@ Object.assign(Autocomplete.prototype, {
                         focusNode = dom.prevAll(focusedNode, '[data-ui-action="select"]').pop();
                         break;
                 }
+            }
+
+            if (!focusedNode && !focusNode) {
+                const term = dom.getValue(this._node);
+                return this._getData({ term });
             }
 
             if (!focusNode) {
@@ -109,9 +110,8 @@ Object.assign(Autocomplete.prototype, {
         // debounced input event
         const getDataDebounced = Core.debounce(term => {
             // check for minimum length
-            if (this._settings.minLength && term.length < this._settings.minLength) {
-                dom.hide(this._menuNode);
-                return;
+            if (this._settings.minSearch && term.length < this._settings.minSearch) {
+                return dom.hide(this._menuNode);
             }
 
             dom.empty(this._itemsList);
@@ -151,14 +151,6 @@ Object.assign(Autocomplete.prototype, {
 
         dom.addEvent(this._node, 'blur.ui.autocomplete', _ => {
             this.hide();
-        });
-
-        dom.addEvent(this._node, 'keydown.ui.autocomplete', e => {
-            if (!/^.$/u.test(e.key)) {
-                return;
-            }
-
-            this.show();
         });
     }
 

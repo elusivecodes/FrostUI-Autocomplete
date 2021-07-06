@@ -25,7 +25,7 @@ Autocomplete.defaults = {
 
         return aLower.localeCompare(bLower);
     }),
-    minLength: 1,
+    minSearch: 1,
     debounceInput: 250,
     duration: 100,
     appendTo: null,

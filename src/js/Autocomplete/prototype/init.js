@@ -20,6 +20,7 @@ Object.assign(Autocomplete.prototype, {
                 term
             ).filter(item => this._settings.isMatch(item, term));
 
+            dom.empty(this._itemsList);
             this._renderResults(results);
             this.update();
         };
