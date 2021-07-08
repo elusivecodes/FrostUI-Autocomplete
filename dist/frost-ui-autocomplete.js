@@ -1,5 +1,5 @@
 /**
- * FrostUI-Autocomplete v1.0.4
+ * FrostUI-Autocomplete v1.0.5
  * https://github.com/elusivecodes/FrostUI-Autocomplete
  */
 (function(global, factory) {
@@ -489,7 +489,6 @@
 
             if (active) {
                 dom.addClass(element, this.constructor.classes.active);
-                // dom.setDataset(element, 'uiActive', true);
             }
 
             return element;

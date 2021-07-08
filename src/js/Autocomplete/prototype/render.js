@@ -60,7 +60,6 @@ Object.assign(Autocomplete.prototype, {
 
         if (active) {
             dom.addClass(element, this.constructor.classes.active);
-            // dom.setDataset(element, 'uiActive', true);
         }
 
         return element;
