@@ -1,5 +1,5 @@
 /**
- * FrostUI-Autocomplete v1.0.5
+ * FrostUI-Autocomplete v1.0.6
  * https://github.com/elusivecodes/FrostUI-Autocomplete
  */
 (function(global, factory) {
@@ -202,7 +202,7 @@
 
                 const value = dom.getDataset(e.currentTarget, 'uiValue');
                 dom.setValue(this._node, value);
-                dom.triggerEvent(this._node, 'change');
+                dom.triggerEvent(this._node, 'change.ui.autocomplete');
                 this.hide();
                 dom.focus(this._node);
             });
@@ -232,7 +232,7 @@
                     if (focusedNode) {
                         const value = dom.getDataset(focusedNode, 'uiValue');
                         dom.setValue(this._node, value);
-                        dom.triggerEvent(this._node, 'change');
+                        dom.triggerEvent(this._node, 'change.ui.autocomplete');
                         this.hide();
                     }
 
