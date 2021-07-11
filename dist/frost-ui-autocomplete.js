@@ -1,5 +1,5 @@
 /**
- * FrostUI-Autocomplete v1.0.8
+ * FrostUI-Autocomplete v1.0.9
  * https://github.com/elusivecodes/FrostUI-Autocomplete
  */
 (function(global, factory) {
@@ -136,7 +136,7 @@
             this._animating = true;
 
             if (this._settings.appendTo) {
-                dom.append(document.body, this._menuNode);
+                dom.append(this._settings.appendTo, this._menuNode);
             } else {
                 dom.after(this._node, this._menuNode);
             }
