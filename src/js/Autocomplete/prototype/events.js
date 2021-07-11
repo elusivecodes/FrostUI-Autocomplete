@@ -37,13 +37,8 @@ Object.assign(Autocomplete.prototype, {
         }));
 
         dom.addEvent(this._node, 'keydown.ui.autocomplete', e => {
-            if (!['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.code)) {
+            if (!['ArrowDown', 'ArrowUp', 'Enter'].includes(e.code)) {
                 return;
-            }
-
-            if (e.code === 'Escape') {
-                // close the menu
-                return dom.blur(this._node);
             }
 
             const focusedNode = dom.findOne('[data-ui-focus]', this._itemsList);
@@ -107,6 +102,16 @@ Object.assign(Autocomplete.prototype, {
             }
         });
 
+        dom.addEvent(this._node, 'keyup.ui.autocomplete', e => {
+            if (e.code !== 'Escape' || !dom.isConnected(this._menuNode)) {
+                return;
+            }
+
+            e.stopPropagation();
+
+            this.hide();
+        });
+
         // debounced input event
         const getDataDebounced = Core.debounce(term => {
             // check for minimum length
@@ -150,6 +155,10 @@ Object.assign(Autocomplete.prototype, {
         }
 
         dom.addEvent(this._node, 'blur.ui.autocomplete', _ => {
+            if (dom.isSame(this._node, document.activeElement)) {
+                return;
+            }
+
             this.hide();
         });
     }
