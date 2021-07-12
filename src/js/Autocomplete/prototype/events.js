@@ -159,6 +159,7 @@ Object.assign(Autocomplete.prototype, {
                 return;
             }
 
+            dom.stop(this._menuNode);
             this.hide();
         });
     }
