@@ -1,5 +1,5 @@
 /**
- * FrostUI-Autocomplete v1.0.10
+ * FrostUI-Autocomplete v1.0.11
  * https://github.com/elusivecodes/FrostUI-Autocomplete
  */
 (function(global, factory) {
@@ -340,6 +340,8 @@
                 }
 
                 dom.stop(this._menuNode);
+                this._animating = false;
+
                 this.hide();
             });
         }

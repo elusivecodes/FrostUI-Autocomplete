@@ -160,6 +160,8 @@ Object.assign(Autocomplete.prototype, {
             }
 
             dom.stop(this._menuNode);
+            this._animating = false;
+
             this.hide();
         });
     }
