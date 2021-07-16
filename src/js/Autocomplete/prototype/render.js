@@ -17,7 +17,7 @@ Object.assign(Autocomplete.prototype, {
         });
         dom.append(this._menuNode, this._itemsList);
 
-        const popperOptions = {
+        this._popperOptions = {
             reference: this._node,
             placement: this._settings.placement,
             position: this._settings.position,
@@ -27,16 +27,15 @@ Object.assign(Autocomplete.prototype, {
         };
 
         if (this._settings.fullWidth) {
-            popperOptions.afterUpdate = (node, reference) => {
+            this._popperOptions.afterUpdate = (node, reference) => {
                 const width = dom.width(reference, DOM.BORDER_BOX);
                 dom.setStyle(node, 'width', width);
             };
-            popperOptions.beforeUpdate = node => {
+
+            this._popperOptions.beforeUpdate = node => {
                 dom.setStyle(node, 'width', '');
             };
         }
-
-        this._popper = new UI.Popper(this._menuNode, popperOptions);
     },
 
     /**
