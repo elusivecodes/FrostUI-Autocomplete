@@ -1,5 +1,5 @@
 /**
- * FrostUI-Autocomplete v1.0.14
+ * FrostUI-Autocomplete v1.0.15
  * https://github.com/elusivecodes/FrostUI-Autocomplete
  */
 (function(global, factory) {
@@ -74,7 +74,10 @@
                 this._popper = null;
             }
 
-            dom.removeEvent(this._node, 'focus.ui.autocomplete');
+            dom.removeEvent(this._node, 'keydown.ui.autocomplete');
+            dom.removeEvent(this._node, 'keyup.ui.autocomplete');
+            dom.removeEvent(this._node, 'input.ui.autocomplete');
+            dom.removeEvent(this._node, 'blur.ui.autocomplete');
             dom.remove(this._menuNode);
 
             this._menuNode = null;
@@ -222,6 +225,26 @@
                 dom.setDataset(e.currentTarget, 'uiFocus', true);
             }));
 
+            if (this._settings.getResults) {
+                // infinite scrolling event
+                dom.addEvent(this._itemsList, 'scroll.ui.autocomplete', Core.throttle(_ => {
+                    if (this._request || !this._showMore) {
+                        return;
+                    }
+
+                    const height = dom.height(this._itemsList);
+                    const scrollHeight = dom.height(this._itemsList, DOM.SCROLL_BOX);
+                    const scrollTop = dom.getScrollY(this._itemsList);
+
+                    if (scrollTop >= scrollHeight - height - (height / 4)) {
+                        const term = dom.getValue(this._node);
+                        const offset = this._data.length;
+
+                        this._getData({ term, offset });
+                    }
+                }, 250, false));
+            }
+
             dom.addEvent(this._node, 'keydown.ui.autocomplete', e => {
                 if (!['ArrowDown', 'ArrowUp', 'Enter'].includes(e.code)) {
                     return;
@@ -319,26 +342,6 @@
 
                 getDataDebounced(term);
             }));
-
-            if (this._settings.getResults) {
-                // infinite scrolling event
-                dom.addEvent(this._itemsList, 'scroll.ui.autocomplete', Core.throttle(_ => {
-                    if (this._request || !this._showMore) {
-                        return;
-                    }
-
-                    const height = dom.height(this._itemsList);
-                    const scrollHeight = dom.height(this._itemsList, DOM.SCROLL_BOX);
-                    const scrollTop = dom.getScrollY(this._itemsList);
-
-                    if (scrollTop >= scrollHeight - height - (height / 4)) {
-                        const term = dom.getValue(this._node);
-                        const offset = this._data.length;
-
-                        this._getData({ term, offset });
-                    }
-                }, 250, false));
-            }
 
             dom.addEvent(this._node, 'blur.ui.autocomplete', _ => {
                 if (dom.isSame(this._node, document.activeElement)) {

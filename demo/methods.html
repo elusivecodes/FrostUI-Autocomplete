@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FrostUI Autocomplete Methods</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/elusivecodes/frostui/dist/frost-ui.css">
+    <link rel="stylesheet" href="../dist/frost-ui-autocomplete.css">
+    <script src="https://cdn.jsdelivr.net/gh/elusivecodes/frostui/dist/frost-ui-bundle.js"></script>
+    <script src="../dist/frost-ui-autocomplete.js"></script>
+</head>
+
+<body>
+    <div class="container pt-5">
+        <div class="mb-4">
+            <label for="autocompleteDispose">Default</label>
+            <div class="form-input">
+                <input class="input-filled" id="autocompleteDispose" type="text" placeholder="Placeholder" autocomplete="off" />
+                <div class="ripple-line"></div>
+            </div>
+            <div class="mt-1">
+                <button class="btn btn-danger ripple mb-0" id="autocompleteDisposeBtn" type="button">Dispose</button>
+                <button class="btn btn-primary ripple mb-0" id="autocompleteInitBtn" type="button">Init</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const autocompleteDispose = dom.findOne('#autocompleteDispose');
+        const autocompleteDisposeBtn = dom.findOne('#autocompleteDisposeBtn');
+        const autocompleteInitBtn = dom.findOne('#autocompleteInitBtn');
+
+        const sampleData = [
+            'Test 1',
+            'Test 2',
+            'Test 3',
+            'Test 4'
+        ];
+
+        UI.Autocomplete.init(autocompleteDispose, {
+            data: sampleData
+        });
+
+        dom.addEvent(autocompleteDisposeBtn, 'click', e => {
+            UI.Autocomplete.init(autocompleteDispose).dispose();
+        });
+
+        dom.addEvent(autocompleteInitBtn, 'click', e => {
+            UI.Autocomplete.init(autocompleteDispose, {
+                data: sampleData
+            });
+        });
+    </script>
+</body>
+
+</html>

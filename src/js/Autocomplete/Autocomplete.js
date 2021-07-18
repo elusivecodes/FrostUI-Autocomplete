@@ -44,7 +44,10 @@ class Autocomplete extends UI.BaseComponent {
             this._popper = null;
         }
 
-        dom.removeEvent(this._node, 'focus.ui.autocomplete');
+        dom.removeEvent(this._node, 'keydown.ui.autocomplete');
+        dom.removeEvent(this._node, 'keyup.ui.autocomplete');
+        dom.removeEvent(this._node, 'input.ui.autocomplete');
+        dom.removeEvent(this._node, 'blur.ui.autocomplete');
         dom.remove(this._menuNode);
 
         this._menuNode = null;
