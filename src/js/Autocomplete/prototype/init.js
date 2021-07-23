@@ -9,18 +9,19 @@ Object.assign(Autocomplete.prototype, {
      */
     _getDataInit() {
         this._getData = ({ term = null }) => {
+            dom.empty(this._itemsList);
+
+            let results;
+
             // check for minimum search length
             if (this._settings.minSearch && (!term || term.length < this._settings.minSearch)) {
-                return this.update();
+                results = [];
+            } else {
+                // filter results
+                results = this._settings.sortResults(this._data, term)
+                    .filter(item => this._settings.isMatch(item, term));
             }
 
-            // filter results
-            const results = this._settings.sortResults(
-                this._data,
-                term
-            ).filter(item => this._settings.isMatch(item, term));
-
-            dom.empty(this._itemsList);
             this._renderResults(results);
             this.update();
         };
@@ -44,7 +45,9 @@ Object.assign(Autocomplete.prototype, {
 
             // check for minimum search length
             if (this._settings.minSearch && (!term || term.length < this._settings.minSearch)) {
-                return this.update();
+                this._renderResults([]);
+                this.update();
+                return;
             }
 
             dom.hide(this._menuNode);

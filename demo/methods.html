@@ -14,21 +14,23 @@
 <body>
     <div class="container pt-5">
         <div class="mb-4">
-            <label for="autocompleteDispose">Default</label>
+            <label for="autocompleteDefault">Default</label>
             <div class="form-input">
-                <input class="input-filled" id="autocompleteDispose" type="text" placeholder="Placeholder" autocomplete="off" />
+                <input class="input-filled" id="autocompleteDefault" type="text" placeholder="Placeholder" autocomplete="off" />
                 <div class="ripple-line"></div>
             </div>
             <div class="mt-1">
-                <button class="btn btn-danger ripple mb-0" id="autocompleteDisposeBtn" type="button">Dispose</button>
-                <button class="btn btn-primary ripple mb-0" id="autocompleteInitBtn" type="button">Init</button>
+                <div class="btn-group">
+                    <button class="btn btn-primary ripple mb-0" id="autocompleteInit" type="button">Init</button>
+                    <button class="btn btn-danger ripple mb-0" id="autocompleteDispose" type="button">Dispose</button>
+                </div>
             </div>
         </div>
     </div>
     <script>
+        const autocompleteDefault = dom.findOne('#autocompleteDefault');
+        const autocompleteInit = dom.findOne('#autocompleteInit');
         const autocompleteDispose = dom.findOne('#autocompleteDispose');
-        const autocompleteDisposeBtn = dom.findOne('#autocompleteDisposeBtn');
-        const autocompleteInitBtn = dom.findOne('#autocompleteInitBtn');
 
         const sampleData = [
             'Test 1',
@@ -37,19 +39,17 @@
             'Test 4'
         ];
 
-        UI.Autocomplete.init(autocompleteDispose, {
-            data: sampleData
-        });
-
-        dom.addEvent(autocompleteDisposeBtn, 'click', e => {
-            UI.Autocomplete.init(autocompleteDispose).dispose();
-        });
-
-        dom.addEvent(autocompleteInitBtn, 'click', e => {
-            UI.Autocomplete.init(autocompleteDispose, {
+        dom.addEvent(autocompleteInit, 'click', e => {
+            UI.Autocomplete.init(autocompleteDefault, {
                 data: sampleData
             });
         });
+
+        dom.addEvent(autocompleteDispose, 'click', e => {
+            UI.Autocomplete.init(autocompleteDefault).dispose();
+        });
+
+        dom.triggerEvent(autocompleteInit, 'click');
     </script>
 </body>
 

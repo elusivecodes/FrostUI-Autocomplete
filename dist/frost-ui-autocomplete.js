@@ -1,5 +1,5 @@
 /**
- * FrostUI-Autocomplete v1.0.15
+ * FrostUI-Autocomplete v1.1.0
  * https://github.com/elusivecodes/FrostUI-Autocomplete
  */
 (function(global, factory) {
@@ -86,6 +86,8 @@
             this._value = null;
             this._request = null;
             this._popperOptions = null;
+            this._getData = null;
+            this._getResults = null;
 
             super.dispose();
         }
@@ -207,12 +209,27 @@
                 e.preventDefault();
             });
 
+            dom.addEvent(this._node, 'blur.ui.autocomplete', _ => {
+                if (dom.isSame(this._node, document.activeElement)) {
+                    return;
+                }
+
+                dom.stop(this._menuNode);
+                this._animating = false;
+
+                this.hide();
+            });
+
             dom.addEventDelegate(this._itemsList, 'mouseup.ui.autocomplete', '[data-ui-action="select"]', e => {
                 e.preventDefault();
 
                 const value = dom.getDataset(e.currentTarget, 'uiValue');
-                dom.setValue(this._node, value);
-                dom.triggerEvent(this._node, 'change.ui.autocomplete');
+
+                if (value !== dom.getValue(this._node)) {
+                    dom.setValue(this._node, value);
+                    dom.triggerEvent(this._node, 'change.ui.autocomplete');
+                }
+
                 this.hide();
                 dom.focus(this._node);
             });
@@ -221,29 +238,22 @@
                 const focusedNode = dom.find('[data-ui-focus]', this._itemsList);
                 dom.removeClass(focusedNode, this.constructor.classes.focus);
                 dom.removeDataset(focusedNode, 'uiFocus');
+
                 dom.addClass(e.currentTarget, this.constructor.classes.focus);
                 dom.setDataset(e.currentTarget, 'uiFocus', true);
             }));
 
-            if (this._settings.getResults) {
-                // infinite scrolling event
-                dom.addEvent(this._itemsList, 'scroll.ui.autocomplete', Core.throttle(_ => {
-                    if (this._request || !this._showMore) {
-                        return;
-                    }
+            // debounced input event
+            const getDataDebounced = Core.debounce(term => {
+                this._getData({ term });
+            }, this._settings.debounceInput);
 
-                    const height = dom.height(this._itemsList);
-                    const scrollHeight = dom.height(this._itemsList, DOM.SCROLL_BOX);
-                    const scrollTop = dom.getScrollY(this._itemsList);
+            dom.addEvent(this._node, 'input.ui.autocomplete', DOM.debounce(_ => {
+                this.show();
 
-                    if (scrollTop >= scrollHeight - height - (height / 4)) {
-                        const term = dom.getValue(this._node);
-                        const offset = this._data.length;
-
-                        this._getData({ term, offset });
-                    }
-                }, 250, false));
-            }
+                const term = dom.getValue(this._node);
+                getDataDebounced(term);
+            }));
 
             dom.addEvent(this._node, 'keydown.ui.autocomplete', e => {
                 if (!['ArrowDown', 'ArrowUp', 'Enter'].includes(e.code)) {
@@ -256,8 +266,12 @@
                     // select the focused item
                     if (focusedNode) {
                         const value = dom.getDataset(focusedNode, 'uiValue');
-                        dom.setValue(this._node, value);
-                        dom.triggerEvent(this._node, 'change.ui.autocomplete');
+
+                        if (value !== dom.getValue(this._node)) {
+                            dom.setValue(this._node, value);
+                            dom.triggerEvent(this._node, 'change.ui.autocomplete');
+                        }
+
                         this.hide();
                     }
 
@@ -316,43 +330,31 @@
                     return;
                 }
 
+                // prevent node from closing modal
                 e.stopPropagation();
 
                 this.hide();
             });
 
-            // debounced input event
-            const getDataDebounced = Core.debounce(term => {
-                // check for minimum length
-                if (this._settings.minSearch && term.length < this._settings.minSearch) {
-                    return dom.hide(this._menuNode);
-                }
+            if (this._settings.getResults) {
+                // infinite scrolling event
+                dom.addEvent(this._itemsList, 'scroll.ui.autocomplete', Core.throttle(_ => {
+                    if (this._request || !this._showMore) {
+                        return;
+                    }
 
-                dom.empty(this._itemsList);
+                    const height = dom.height(this._itemsList);
+                    const scrollHeight = dom.height(this._itemsList, DOM.SCROLL_BOX);
+                    const scrollTop = dom.getScrollY(this._itemsList);
 
-                if (dom.isConnected(this._menuNode)) {
-                    this._getData({ term });
-                } else {
-                    this.show();
-                }
-            }, this._settings.debounceInput);
+                    if (scrollTop >= scrollHeight - height - (height / 4)) {
+                        const term = dom.getValue(this._node);
+                        const offset = this._data.length;
 
-            dom.addEvent(this._node, 'input.ui.autocomplete', DOM.debounce(_ => {
-                const term = dom.getValue(this._node);
-
-                getDataDebounced(term);
-            }));
-
-            dom.addEvent(this._node, 'blur.ui.autocomplete', _ => {
-                if (dom.isSame(this._node, document.activeElement)) {
-                    return;
-                }
-
-                dom.stop(this._menuNode);
-                this._animating = false;
-
-                this.hide();
-            });
+                        this._getData({ term, offset });
+                    }
+                }, 250, false));
+            }
         }
 
     });
@@ -369,18 +371,19 @@
          */
         _getDataInit() {
             this._getData = ({ term = null }) => {
+                dom.empty(this._itemsList);
+
+                let results;
+
                 // check for minimum search length
                 if (this._settings.minSearch && (!term || term.length < this._settings.minSearch)) {
-                    return this.update();
+                    results = [];
+                } else {
+                    // filter results
+                    results = this._settings.sortResults(this._data, term)
+                        .filter(item => this._settings.isMatch(item, term));
                 }
 
-                // filter results
-                const results = this._settings.sortResults(
-                    this._data,
-                    term
-                ).filter(item => this._settings.isMatch(item, term));
-
-                dom.empty(this._itemsList);
                 this._renderResults(results);
                 this.update();
             };
@@ -404,7 +407,9 @@
 
                 // check for minimum search length
                 if (this._settings.minSearch && (!term || term.length < this._settings.minSearch)) {
-                    return this.update();
+                    this._renderResults([]);
+                    this.update();
+                    return;
                 }
 
                 dom.hide(this._menuNode);
