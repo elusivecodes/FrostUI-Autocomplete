@@ -1,5 +1,5 @@
 /**
- * FrostUI-Autocomplete v1.1.2
+ * FrostUI-Autocomplete v1.1.3
  * https://github.com/elusivecodes/FrostUI-Autocomplete
  */
 (function(global, factory) {
