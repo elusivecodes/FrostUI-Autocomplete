@@ -50,8 +50,14 @@ Object.assign(Autocomplete.prototype, {
                 return;
             }
 
+            const options = { offset };
+
+            if (term) {
+                options.term = term;
+            }
+
             dom.hide(this._menuNode);
-            const request = this._getResults({ offset, term });
+            const request = this._getResults(options);
 
             request.then(response => {
                 this._renderResults(response.results);

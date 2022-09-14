@@ -1,5 +1,5 @@
 /**
- * FrostUI-Autocomplete v1.1.4
+ * FrostUI-Autocomplete v1.1.5
  * https://github.com/elusivecodes/FrostUI-Autocomplete
  */
 (function(global, factory) {
@@ -412,8 +412,14 @@
                     return;
                 }
 
+                const options = { offset };
+
+                if (term) {
+                    options.term = term;
+                }
+
                 dom.hide(this._menuNode);
-                const request = this._getResults({ offset, term });
+                const request = this._getResults(options);
 
                 request.then(response => {
                     this._renderResults(response.results);
