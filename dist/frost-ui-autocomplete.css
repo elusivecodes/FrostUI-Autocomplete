@@ -1,45 +1,51 @@
 .autocomplete-menu {
+  --ui-autocomplete-z-index: 1000;
+  --ui-autocomplete-color: var(--ui-body-color);
+  --ui-autocomplete-bg: var(--ui-body-bg);
+  --ui-autocomplete-border-width: var(--ui-border-width);
+  --ui-autocomplete-border-color: var(--ui-border-color);
+  --ui-autocomplete-item-padding-x: 1rem;
+  --ui-autocomplete-item-padding-y: 0.25rem;
+  --ui-autocomplete-item-color: var(--ui-body-color);
+  --ui-autocomplete-item-focus-color: var(--ui-primary-contrast);
+  --ui-autocomplete-item-focus-bg: var(--ui-primary);
+  --ui-autocomplete-item-active-color: var(--ui-body-color);
+  --ui-autocomplete-item-active-bg: var(--ui-secondary-bg);
   position: absolute;
-  z-index: 1000;
+  z-index: var(--ui-autocomplete-z-index);
   width: 100%;
   padding: 0;
   margin: 0;
-  font-size: 1rem;
-  color: #121212;
-  text-align: left;
-  list-style: none;
-  background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-}
-
-.autocomplete-items {
-  max-height: 250px;
-  margin: 0;
   overflow-y: auto;
-  list-style-type: none;
+  font-size: 1rem;
+  color: var(--ui-autocomplete-color);
+  text-align: left;
+  background-color: var(--ui-autocomplete-bg);
+  border: var(--ui-autocomplete-border-width) var(--ui-border-style) var(--ui-autocomplete-border-color);
 }
 
 .autocomplete-item {
   display: block;
   width: 100%;
-  padding: 0.25rem 1rem;
+  padding: var(--ui-autocomplete-item-padding-y) var(--ui-autocomplete-item-padding-x);
   clear: both;
   font-weight: 400;
-  color: #121212;
+  color: var(--ui-autocomplete-item-color);
   text-align: inherit;
   white-space: nowrap;
-  cursor: default;
   background-color: transparent;
   border: 0;
 }
-
-.autocomplete-focus, .autocomplete-focus.autocomplete-active {
-  color: #fff;
-  background-color: #2b55d4;
+.autocomplete-item.active {
+  color: var(--ui-autocomplete-item-active-color);
+  background-color: var(--ui-autocomplete-item-active-bg);
+}
+.autocomplete-item.focus {
+  color: var(--ui-autocomplete-item-focus-color);
+  background-color: var(--ui-autocomplete-item-focus-bg);
+}
+.autocomplete-item:not(:disabled) {
+  cursor: default;
 }
 
-.autocomplete-active {
-  color: #121212;
-  text-decoration: none;
-  background-color: rgba(0, 0, 0, 0.1);
-}
+/*# sourceMappingURL=frost-ui-autocomplete.css.map */

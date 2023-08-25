@@ -1,51 +1,16 @@
-$spacing: 1rem !default;
-
-// border
-$border-size: 1px !default;
-$border-style: solid !default;
-
-// color
-$white: #fff !default;
-$black: #000 !default;
-
-$color-variants: (
-    primary: #2b55d4
-) !default;
-
-$text-color: #121212 !default;
-
-$border-color: fade($black, .15) !default;
-
-// text
-$font-size-sm: .875rem !default;
-$font-size-md: 1rem !default;
-
-$font-weights: (
-    normal: 400
-) !default;
-
-// z index
-$dropdown-z-index: 1000 !default;
-
 // autocomplete
-$autocomplete-padding-x: $spacing !default;
-$autocomplete-padding-y: $spacing * .5 !default;
-$autocomplete-color: $text-color !default;
+$autocomplete-z-index: 1000 !default;
+$autocomplete-font-size: 1rem !default;
+$autocomplete-color: var(--ui-body-color) !default;
+$autocomplete-bg: var(--ui-body-bg) !default;
+$autocomplete-border-width: var(--ui-border-width) !default;
+$autocomplete-border-color: var(--ui-border-color) !default;
 
-$autocomplete-menu-font-size: $font-size-md !default;
-$autocomplete-menu-color: $autocomplete-color !default;
-$autocomplete-menu-background-color: $white !default;
-$autocomplete-menu-border-size: $border-size !default;
-$autocomplete-menu-border-color: $border-color !default;
-
-$autocomplete-items-max-height: 250px !default;
-
-$autocomplete-item-padding-x: $autocomplete-padding-x !default;
-$autocomplete-item-padding-y: $spacing * .25 !default;
-$autocomplete-item-font-weight: map-get($font-weights, normal) !default;
-$autocomplete-item-color: $autocomplete-menu-color !default;
-
-$autocomplete-item-focus-background-color: map-get($color-variants, primary) !default;
-$autocomplete-item-focus-color: text-color($autocomplete-item-focus-background-color) !default;
-$autocomplete-item-active-color: $autocomplete-color !default;
-$autocomplete-item-active-background-color: fade($black, .1) !default;
+$autocomplete-item-padding-x: 1rem !default;
+$autocomplete-item-padding-y: .25rem !default;
+$autocomplete-item-font-weight: 400 !default;
+$autocomplete-item-color: var(--ui-body-color) !default;
+$autocomplete-item-focus-color: var(--ui-primary-contrast) !default;
+$autocomplete-item-focus-bg: var(--ui-primary) !default;
+$autocomplete-item-active-color: var(--ui-body-color) !default;
+$autocomplete-item-active-bg: var(--ui-secondary-bg) !default;

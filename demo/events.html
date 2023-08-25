@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FrostUI Autocomplete Events</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/elusivecodes/frostui@1.4.6/dist/frost-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/elusivecodes/frostui@latest/dist/frost-ui.css">
     <link rel="stylesheet" href="../dist/frost-ui-autocomplete.css">
-    <script src="https://cdn.jsdelivr.net/gh/elusivecodes/frostui@1.4.6/dist/frost-ui-bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/elusivecodes/frostui@latest/dist/frost-ui-bundle.js"></script>
     <script src="../dist/frost-ui-autocomplete.js"></script>
 </head>
 
@@ -25,8 +25,8 @@
         </div>
     </div>
     <script>
-        const autocompleteEvents = dom.findOne('#autocompleteEvents');
-        const events = dom.findOne('#events');
+        const autocompleteEvents = $.findOne('#autocompleteEvents');
+        const events = $.findOne('#events');
 
         UI.Autocomplete.init(autocompleteEvents, {
             data: [
@@ -37,14 +37,14 @@
             ]
         });
 
-        dom.addEvent(autocompleteEvents, 'change.ui.autocomplete show.ui.autocomplete shown.ui.autocomplete hide.ui.autocomplete hidden.ui.autocomplete', e => {
-            const div = dom.create('div', {
+        $.addEvent(autocompleteEvents, 'change.ui.autocomplete show.ui.autocomplete shown.ui.autocomplete hide.ui.autocomplete hidden.ui.autocomplete', e => {
+            const div = $.create('div', {
                 html: `<small>"${e.type}" event triggered</small>`
             });
-            dom.append(events, div);
+            $.append(events, div);
 
-            const scrollHeight = dom.height(events, DOM.SCROLL_BOX);
-            dom.setScrollY(events, scrollHeight);
+            const scrollHeight = $.height(events, { boxSize: $.SCROLL_BOX });
+            $.setScrollY(events, scrollHeight);
         });
     </script>
 </body>
