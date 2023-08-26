@@ -229,7 +229,7 @@
 
                 if (!offset) {
                     $.empty(this._menuNode);
-                } else if (this._loader) {
+                } else {
                     $.detach(this._loader);
                 }
 
@@ -251,7 +251,7 @@
             });
 
             this._request = request;
-        }, this._options.debounceInput);
+        }, this._options.debounce);
 
         this._getData = ({ offset = 0, term = null }) => {
             // cancel last request
@@ -383,10 +383,10 @@
             } else {
                 switch (e.code) {
                     case 'ArrowDown':
-                        focusNode = $.nextAll(focusedNode, '[data-ui-action="select"]').shift();
+                        focusNode = $.next(focusedNode, '[data-ui-action="select"]').shift();
                         break;
                     case 'ArrowUp':
-                        focusNode = $.prevAll(focusedNode, '[data-ui-action="select"]').pop();
+                        focusNode = $.prev(focusedNode, '[data-ui-action="select"]').pop();
                         break;
                 }
             }
@@ -468,15 +468,8 @@
         });
 
         if (this._options.getResults) {
-            this._loader = $.create('div', {
-                class: this.constructor.classes.item,
-                html: this._options.sanitize(this._options.lang.loading),
-            });
-
-            this._error = $.create('div', {
-                class: this.constructor.classes.item,
-                text: this._options.sanitize(this._options.lang.error),
-            });
+            this._loader = this._renderInfo(this._options.lang.loading);
+            this._error = this._renderInfo(this._options.lang.error);
         }
 
         this._popperOptions = {
@@ -506,6 +499,19 @@
             'aria-expanded': false,
             'aria-activedescendent': '',
         });
+    }
+    /**
+     * Render an information item.
+     * @param {string} text The text to render.
+     * @return {HTMLElement} The information item.
+     */
+    function _renderInfo(text) {
+        const element = $.create('div', {
+            html: this._options.sanitize(text),
+            class: this.constructor.classes.info,
+        });
+
+        return element;
     }
     /**
      * Render an item.
@@ -625,7 +631,7 @@
             return aLower.localeCompare(bLower);
         },
         minSearch: 1,
-        debounceInput: 250,
+        debounce: 250,
         duration: 100,
         maxHeight: '250px',
         appendTo: null,
@@ -641,6 +647,7 @@
     Autocomplete.classes = {
         active: 'active',
         focus: 'focus',
+        info: 'autocomplete-item text-body-secondary',
         item: 'autocomplete-item',
         items: 'autocomplete-items',
         menu: 'autocomplete-menu',
@@ -654,6 +661,7 @@
     proto._getResultsCallbackInit = _getResultsCallbackInit;
     proto._getResultsInit = _getResultsInit;
     proto._render = _render;
+    proto._renderInfo = _renderInfo;
     proto._renderItem = _renderItem;
     proto._renderResults = _renderResults;
 

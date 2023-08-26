@@ -68,7 +68,7 @@ export function _getResultsInit() {
 
             if (!offset) {
                 $.empty(this._menuNode);
-            } else if (this._loader) {
+            } else {
                 $.detach(this._loader);
             }
 
@@ -90,7 +90,7 @@ export function _getResultsInit() {
         });
 
         this._request = request;
-    }, this._options.debounceInput);
+    }, this._options.debounce);
 
     this._getData = ({ offset = 0, term = null }) => {
         // cancel last request

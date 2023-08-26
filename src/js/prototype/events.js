@@ -95,10 +95,10 @@ export function _events() {
         } else {
             switch (e.code) {
                 case 'ArrowDown':
-                    focusNode = $.nextAll(focusedNode, '[data-ui-action="select"]').shift();
+                    focusNode = $.next(focusedNode, '[data-ui-action="select"]').shift();
                     break;
                 case 'ArrowUp':
-                    focusNode = $.prevAll(focusedNode, '[data-ui-action="select"]').pop();
+                    focusNode = $.prev(focusedNode, '[data-ui-action="select"]').pop();
                     break;
             }
         }

@@ -3,7 +3,7 @@ import { initComponent } from '@fr0st/ui';
 import Autocomplete from './autocomplete.js';
 import { _getDataInit, _getResultsCallbackInit, _getResultsInit } from './prototype/data.js';
 import { _events } from './prototype/events.js';
-import { _render, _renderItem, _renderResults } from './prototype/render.js';
+import { _render, _renderInfo, _renderItem, _renderResults } from './prototype/render.js';
 
 // Autocomplete default options
 Autocomplete.defaults = {
@@ -48,7 +48,7 @@ Autocomplete.defaults = {
         return aLower.localeCompare(bLower);
     },
     minSearch: 1,
-    debounceInput: 250,
+    debounce: 250,
     duration: 100,
     maxHeight: '250px',
     appendTo: null,
@@ -64,6 +64,7 @@ Autocomplete.defaults = {
 Autocomplete.classes = {
     active: 'active',
     focus: 'focus',
+    info: 'autocomplete-item text-body-secondary',
     item: 'autocomplete-item',
     items: 'autocomplete-items',
     menu: 'autocomplete-menu',
@@ -77,6 +78,7 @@ proto._getDataInit = _getDataInit;
 proto._getResultsCallbackInit = _getResultsCallbackInit;
 proto._getResultsInit = _getResultsInit;
 proto._render = _render;
+proto._renderInfo = _renderInfo;
 proto._renderItem = _renderItem;
 proto._renderResults = _renderResults;
 

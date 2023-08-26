@@ -17,15 +17,8 @@ export function _render() {
     });
 
     if (this._options.getResults) {
-        this._loader = $.create('div', {
-            class: this.constructor.classes.item,
-            html: this._options.sanitize(this._options.lang.loading),
-        });
-
-        this._error = $.create('div', {
-            class: this.constructor.classes.item,
-            text: this._options.sanitize(this._options.lang.error),
-        });
+        this._loader = this._renderInfo(this._options.lang.loading);
+        this._error = this._renderInfo(this._options.lang.error);
     }
 
     this._popperOptions = {
@@ -55,6 +48,20 @@ export function _render() {
         'aria-expanded': false,
         'aria-activedescendent': '',
     });
+};
+
+/**
+ * Render an information item.
+ * @param {string} text The text to render.
+ * @return {HTMLElement} The information item.
+ */
+export function _renderInfo(text) {
+    const element = $.create('div', {
+        html: this._options.sanitize(text),
+        class: this.constructor.classes.info,
+    });
+
+    return element;
 };
 
 /**
