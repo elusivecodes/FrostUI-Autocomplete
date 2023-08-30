@@ -87,6 +87,8 @@ export function _renderItem(data) {
         },
     });
 
+    this._activeItems.push(element);
+
     if ($.getValue(this._node) === value) {
         $.addClass(element, this.constructor.classes.active);
     }

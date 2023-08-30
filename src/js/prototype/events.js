@@ -91,16 +91,20 @@ export function _events() {
 
         let focusNode;
         if (!focusedNode) {
-            focusNode = $.findOne('[data-ui-action="select"]', this._menuNode);
+            focusNode = this._activeItems[0];
         } else {
+            let focusIndex = this._activeItems.indexOf(focusedNode);
+
             switch (e.code) {
                 case 'ArrowDown':
-                    focusNode = $.next(focusedNode, '[data-ui-action="select"]').shift();
+                    focusIndex++;
                     break;
                 case 'ArrowUp':
-                    focusNode = $.prev(focusedNode, '[data-ui-action="select"]').pop();
+                    focusIndex--;
                     break;
             }
+
+            focusNode = this._activeItems[focusIndex];
         }
 
         if (!focusedNode && !focusNode && !this._request) {

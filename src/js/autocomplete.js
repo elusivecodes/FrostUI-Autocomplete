@@ -15,6 +15,7 @@ export default class Autocomplete extends BaseComponent {
         super(node, options);
 
         this._data = [];
+        this._activeItems = [];
 
         this._getData = null;
         this._getResults = null;
@@ -55,6 +56,7 @@ export default class Autocomplete extends BaseComponent {
         this._loader = null;
         this._error = null;
         this._data = null;
+        this._activeItems = null;
         this._value = null;
         this._requests = null;
         this._popperOptions = null;
@@ -84,6 +86,7 @@ export default class Autocomplete extends BaseComponent {
             this._popper.dispose();
             this._popper = null;
 
+            this._activeItems = [];
             $.empty(this._menuNode);
             $.detach(this._menuNode);
             $.removeDataset(this._menuNode, 'uiAnimating');

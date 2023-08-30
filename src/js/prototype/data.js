@@ -5,6 +5,7 @@ import $ from '@fr0st/query';
  */
 export function _getDataInit() {
     this._getData = ({ term = null }) => {
+        this._activeItems = [];
         $.empty(this._menuNode);
         $.setAttribute(this._node, { 'aria-activedescendent': '' });
 
@@ -101,6 +102,7 @@ export function _getResultsInit() {
         this._request = null;
 
         if (!offset) {
+            this._activeItems = [];
             $.setAttribute(this._node, { 'aria-activedescendent': '' });
 
             const children = $.children(this._menuNode, (node) => !$.isSame(node, this._loader));

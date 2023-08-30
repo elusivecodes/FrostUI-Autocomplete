@@ -18,6 +18,7 @@
             super(node, options);
 
             this._data = [];
+            this._activeItems = [];
 
             this._getData = null;
             this._getResults = null;
@@ -58,6 +59,7 @@
             this._loader = null;
             this._error = null;
             this._data = null;
+            this._activeItems = null;
             this._value = null;
             this._requests = null;
             this._popperOptions = null;
@@ -87,6 +89,7 @@
                 this._popper.dispose();
                 this._popper = null;
 
+                this._activeItems = [];
                 $.empty(this._menuNode);
                 $.detach(this._menuNode);
                 $.removeDataset(this._menuNode, 'uiAnimating');
@@ -168,6 +171,7 @@
      */
     function _getDataInit() {
         this._getData = ({ term = null }) => {
+            this._activeItems = [];
             $.empty(this._menuNode);
             $.setAttribute(this._node, { 'aria-activedescendent': '' });
 
@@ -262,6 +266,7 @@
             this._request = null;
 
             if (!offset) {
+                this._activeItems = [];
                 $.setAttribute(this._node, { 'aria-activedescendent': '' });
 
                 const children = $.children(this._menuNode, (node) => !$.isSame(node, this._loader));
@@ -379,16 +384,20 @@
 
             let focusNode;
             if (!focusedNode) {
-                focusNode = $.findOne('[data-ui-action="select"]', this._menuNode);
+                focusNode = this._activeItems[0];
             } else {
+                let focusIndex = this._activeItems.indexOf(focusedNode);
+
                 switch (e.code) {
                     case 'ArrowDown':
-                        focusNode = $.next(focusedNode, '[data-ui-action="select"]').shift();
+                        focusIndex++;
                         break;
                     case 'ArrowUp':
-                        focusNode = $.prev(focusedNode, '[data-ui-action="select"]').pop();
+                        focusIndex--;
                         break;
                 }
+
+                focusNode = this._activeItems[focusIndex];
             }
 
             if (!focusedNode && !focusNode && !this._request) {
@@ -535,6 +544,8 @@
                 uiValue: value,
             },
         });
+
+        this._activeItems.push(element);
 
         if ($.getValue(this._node) === value) {
             $.addClass(element, this.constructor.classes.active);
