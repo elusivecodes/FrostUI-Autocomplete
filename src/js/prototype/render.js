@@ -78,7 +78,7 @@ export function _renderItem(value) {
         class: this.constructor.classes.item,
         attributes: {
             id,
-            role: 'option',
+            'role': 'option',
             'aria-label': value,
             'aria-selected': active,
         },
