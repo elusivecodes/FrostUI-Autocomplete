@@ -40,7 +40,7 @@ export function _events() {
     });
 
     $.addEventDelegate(this._menuNode, 'mouseover.ui.autocomplete', '[data-ui-action="select"]', $.debounce((e) => {
-        const focusedNode = $.find('[data-ui-focus]', this._menuNode);
+        const focusedNode = $.findOne('[data-ui-focus]', this._menuNode);
         $.removeClass(focusedNode, this.constructor.classes.focus);
         $.removeDataset(focusedNode, 'uiFocus');
 
@@ -52,10 +52,12 @@ export function _events() {
     }));
 
     $.addEvent(this._node, 'input.ui.autocomplete', $.debounce((_) => {
-        this.show();
-
-        const term = $.getValue(this._node);
-        this._getData({ term });
+        if (!$.isConnected(this._menuNode)) {
+            this.show();
+        } else {
+            const term = $.getValue(this._node);
+            this._getData({ term });
+        }
     }));
 
     $.addEvent(this._node, 'keydown.ui.autocomplete', (e) => {
@@ -84,7 +86,8 @@ export function _events() {
         e.preventDefault();
 
         if (!$.isConnected(this._menuNode)) {
-            return this.show();
+            this.show();
+            return;
         }
 
         // focus the previous/next item
@@ -109,7 +112,8 @@ export function _events() {
 
         if (!focusedNode && !focusNode && !this._request) {
             const term = $.getValue(this._node);
-            return this._getData({ term });
+            this._getData({ term });
+            return;
         }
 
         if (!focusNode) {

@@ -7,7 +7,7 @@ import { generateId } from '@fr0st/ui';
 export function _render() {
     const id = generateId('autocomplete');
 
-    this._menuNode = $.create('div', {
+    this._menuNode = $.create('ul', {
         class: this.constructor.classes.menu,
         style: { maxHeight: this._options.maxHeight },
         attributes: {
@@ -66,20 +66,21 @@ export function _renderInfo(text) {
 
 /**
  * Render an item.
- * @param {string|object} data The data to render.
+ * @param {string} value The value to render.
  * @return {HTMLElement} The item element.
  */
-export function _renderItem(data) {
+export function _renderItem(value) {
     const id = generateId('autocomplete-item');
 
-    const value = this._options.getValue(data);
+    const active = $.getValue(this._node) == value;
 
-    const element = $.create('button', {
+    const element = $.create('li', {
         class: this.constructor.classes.item,
         attributes: {
             id,
-            type: 'button',
             role: 'option',
+            'aria-label': value,
+            'aria-selected': active,
         },
         dataset: {
             uiAction: 'select',
@@ -89,11 +90,11 @@ export function _renderItem(data) {
 
     this._activeItems.push(element);
 
-    if ($.getValue(this._node) === value) {
+    if (active) {
         $.addClass(element, this.constructor.classes.active);
     }
 
-    const content = this._options.renderResult.bind(this)(data, element);
+    const content = this._options.renderResult.bind(this)(value, element);
 
     if ($._isString(content)) {
         $.setHTML(element, this._options.sanitize(content));
@@ -109,35 +110,26 @@ export function _renderItem(data) {
  * @param {array} results The results to render.
  */
 export function _renderResults(results) {
-    if (!results.length) {
+    $.show(this._menuNode);
+
+    for (const value of results) {
+        const element = this._renderItem(value);
+        $.append(this._menuNode, element);
+    }
+
+    if (!$.hasChildren(this._menuNode)) {
         $.hide(this._menuNode);
         return;
     }
 
-    $.show(this._menuNode);
-
-    for (const item of results) {
-        const element = this._renderItem(item);
-        $.append(this._menuNode, element);
-    }
-
     const focusedNode = $.findOne('[data-ui-focus]', this._menuNode);
 
-    if (focusedNode) {
-        return;
-    }
+    if (!focusedNode && this._activeItems.length) {
+        const element = this._activeItems[0];
+        $.addClass(element, this.constructor.classes.focus);
+        $.setDataset(element, { uiFocus: true });
 
-    let focusNode = $.findOne('[data-ui-active]', this._menuNode);
-
-    if (!focusNode) {
-        focusNode = $.findOne('[data-ui-action="select"]', this._menuNode);
-    }
-
-    if (focusNode) {
-        $.addClass(focusNode, this.constructor.classes.focus);
-        $.setDataset(focusNode, { uiFocus: true });
-
-        const id = $.getAttribute(focusNode, 'id');
+        const id = $.getAttribute(element, 'id');
         $.setAttribute(this._node, { 'aria-activedescendent': id });
     }
 };

@@ -84,13 +84,15 @@
         const autocompleteDiacratics = $.findOne('#autocompleteDiacratics');
         const autocompleteModal = $.findOne('#autocompleteModal');
 
+        const sampleData = [
+            'Test 1',
+            'Test 2',
+            'Test 3',
+            'Test 4'
+        ];
+
         UI.Autocomplete.init(autocompleteDefault, {
-            data: [
-                'Test 1',
-                'Test 2',
-                'Test 3',
-                'Test 4',
-            ]
+            data: sampleData
         });
 
         UI.Autocomplete.init(autocompleteQuery, {
@@ -155,25 +157,8 @@
         });
 
         UI.Autocomplete.init(autocompleteRender, {
-            data: [
-                {
-                    text: 'Test 1',
-                    style: 'success'
-                },
-                {
-                    text: 'Test 2',
-                    style: 'info'
-                },
-                {
-                    text: 'Test 3',
-                    style: 'warning'
-                },
-                {
-                    text: 'Test 4',
-                    style: 'danger'
-                },
-            ],
-            renderResult: data => `<span class="badge text-bg-${data.style}">${data.text}</span>`
+            data: sampleData,
+            renderResult: value => `<span class="badge text-bg-info">${value}</span>`
         });
 
         UI.Autocomplete.init(autocompleteDiacratics, {
@@ -186,12 +171,7 @@
         });
 
         UI.Autocomplete.init(autocompleteModal, {
-            data: [
-                'Test 1',
-                'Test 2',
-                'Test 3',
-                'Test 4',
-            ]
+            data: sampleData
         });
     </script>
 </body>

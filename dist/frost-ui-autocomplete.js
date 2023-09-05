@@ -24,7 +24,6 @@
             this._getResults = null;
 
             if (this._options.getResults) {
-                this._getResultsCallbackInit();
                 this._getResultsInit();
             } else if (this._options.data) {
                 this._data = this._options.data;
@@ -64,7 +63,6 @@
             this._requests = null;
             this._popperOptions = null;
             this._getData = null;
-            this._getResults = null;
 
             super.dispose();
         }
@@ -175,42 +173,24 @@
             $.empty(this._menuNode);
             $.setAttribute(this._node, { 'aria-activedescendent': '' });
 
-            let results;
-
             // check for minimum search length
             if (this._options.minSearch && (!term || term.length < this._options.minSearch)) {
-                results = [];
-            } else {
-                const isMatch = this._options.isMatch.bind(this);
-                const sortResults = this._options.sortResults.bind(this);
-
-                // filter results
-                results = this._data.filter((data) => isMatch(data, term))
-                    .sort((a, b) => sortResults(a, b, term));
+                $.hide(this._menuNode);
+                this.update();
+                return;
             }
+
+            $.show(this._menuNode);
+
+            const isMatch = this._options.isMatch.bind(this);
+            const sortResults = this._options.sortResults.bind(this);
+
+            // filter results
+            const results = this._data.filter((value) => isMatch(value, term))
+                .sort((a, b) => sortResults(a, b, term));
 
             this._renderResults(results);
             this.update();
-        };
-    }
-    /**
-     * Initialize get data callback.
-     */
-    function _getResultsCallbackInit() {
-        this._getResults = (options) => {
-            // reset data for starting offset
-            if (!options.offset) {
-                this._data = [];
-            }
-
-            const request = Promise.resolve(this._options.getResults(options));
-
-            request.then((response) => {
-                this._data.push(...response.results);
-                this._showMore = response.showMore;
-            }).catch((_) => { });
-
-            return request;
         };
     }
     /**
@@ -224,20 +204,26 @@
                 options.term = term;
             }
 
-            const request = this._getResults(options);
+            const request = Promise.resolve(this._options.getResults(options));
 
             request.then((response) => {
                 if (this._request !== request) {
                     return;
                 }
 
+                const newData = response.results;
+
                 if (!offset) {
+                    this._data = newData;
                     $.empty(this._menuNode);
                 } else {
+                    this._data.push(...newData);
                     $.detach(this._loader);
                 }
 
-                this._renderResults(response.results);
+                this._showMore = response.showMore;
+
+                this._renderResults(newData);
 
                 this._request = null;
             }).catch((_) => {
@@ -333,7 +319,7 @@
         });
 
         $.addEventDelegate(this._menuNode, 'mouseover.ui.autocomplete', '[data-ui-action="select"]', $.debounce((e) => {
-            const focusedNode = $.find('[data-ui-focus]', this._menuNode);
+            const focusedNode = $.findOne('[data-ui-focus]', this._menuNode);
             $.removeClass(focusedNode, this.constructor.classes.focus);
             $.removeDataset(focusedNode, 'uiFocus');
 
@@ -345,10 +331,12 @@
         }));
 
         $.addEvent(this._node, 'input.ui.autocomplete', $.debounce((_) => {
-            this.show();
-
-            const term = $.getValue(this._node);
-            this._getData({ term });
+            if (!$.isConnected(this._menuNode)) {
+                this.show();
+            } else {
+                const term = $.getValue(this._node);
+                this._getData({ term });
+            }
         }));
 
         $.addEvent(this._node, 'keydown.ui.autocomplete', (e) => {
@@ -377,7 +365,8 @@
             e.preventDefault();
 
             if (!$.isConnected(this._menuNode)) {
-                return this.show();
+                this.show();
+                return;
             }
 
             // focus the previous/next item
@@ -402,7 +391,8 @@
 
             if (!focusedNode && !focusNode && !this._request) {
                 const term = $.getValue(this._node);
-                return this._getData({ term });
+                this._getData({ term });
+                return;
             }
 
             if (!focusNode) {
@@ -467,7 +457,7 @@
     function _render() {
         const id = ui.generateId('autocomplete');
 
-        this._menuNode = $.create('div', {
+        this._menuNode = $.create('ul', {
             class: this.constructor.classes.menu,
             style: { maxHeight: this._options.maxHeight },
             attributes: {
@@ -524,20 +514,21 @@
     }
     /**
      * Render an item.
-     * @param {string|object} data The data to render.
+     * @param {string} value The value to render.
      * @return {HTMLElement} The item element.
      */
-    function _renderItem(data) {
+    function _renderItem(value) {
         const id = ui.generateId('autocomplete-item');
 
-        const value = this._options.getValue(data);
+        const active = $.getValue(this._node) == value;
 
-        const element = $.create('button', {
+        const element = $.create('li', {
             class: this.constructor.classes.item,
             attributes: {
                 id,
-                type: 'button',
                 role: 'option',
+                'aria-label': value,
+                'aria-selected': active,
             },
             dataset: {
                 uiAction: 'select',
@@ -547,11 +538,11 @@
 
         this._activeItems.push(element);
 
-        if ($.getValue(this._node) === value) {
+        if (active) {
             $.addClass(element, this.constructor.classes.active);
         }
 
-        const content = this._options.renderResult.bind(this)(data, element);
+        const content = this._options.renderResult.bind(this)(value, element);
 
         if ($._isString(content)) {
             $.setHTML(element, this._options.sanitize(content));
@@ -566,35 +557,26 @@
      * @param {array} results The results to render.
      */
     function _renderResults(results) {
-        if (!results.length) {
+        $.show(this._menuNode);
+
+        for (const value of results) {
+            const element = this._renderItem(value);
+            $.append(this._menuNode, element);
+        }
+
+        if (!$.hasChildren(this._menuNode)) {
             $.hide(this._menuNode);
             return;
         }
 
-        $.show(this._menuNode);
-
-        for (const item of results) {
-            const element = this._renderItem(item);
-            $.append(this._menuNode, element);
-        }
-
         const focusedNode = $.findOne('[data-ui-focus]', this._menuNode);
 
-        if (focusedNode) {
-            return;
-        }
+        if (!focusedNode && this._activeItems.length) {
+            const element = this._activeItems[0];
+            $.addClass(element, this.constructor.classes.focus);
+            $.setDataset(element, { uiFocus: true });
 
-        let focusNode = $.findOne('[data-ui-active]', this._menuNode);
-
-        if (!focusNode) {
-            focusNode = $.findOne('[data-ui-action="select"]', this._menuNode);
-        }
-
-        if (focusNode) {
-            $.addClass(focusNode, this.constructor.classes.focus);
-            $.setDataset(focusNode, { uiFocus: true });
-
-            const id = $.getAttribute(focusNode, 'id');
+            const id = $.getAttribute(element, 'id');
             $.setAttribute(this._node, { 'aria-activedescendent': id });
         }
     }
@@ -607,15 +589,9 @@
         },
         data: null,
         getResults: null,
-        getValue: (value) => $._isString(value) ?
-            value :
-            value.text,
-        renderResult(data) {
-            return this._options.getValue(data);
-        },
+        renderResult: (value) => value,
         sanitize: (input) => $.sanitize(input),
-        isMatch(data, term) {
-            const value = this._options.getValue(data);
+        isMatch(value, term) {
             const escapedTerm = $._escapeRegExp(term);
             const regExp = new RegExp(escapedTerm, 'i');
 
@@ -628,8 +604,8 @@
             return regExp.test(normalized);
         },
         sortResults(a, b, term) {
-            const aLower = this._options.getValue(a).toLowerCase();
-            const bLower = this._options.getValue(b).toLowerCase();
+            const aLower = a.toLowerCase();
+            const bLower = b.toLowerCase();
 
             if (term) {
                 const diff = aLower.indexOf(term) - bLower.indexOf(term);
@@ -660,8 +636,7 @@
         focus: 'focus',
         info: 'autocomplete-item text-body-secondary',
         item: 'autocomplete-item',
-        items: 'autocomplete-items',
-        menu: 'autocomplete-menu',
+        menu: 'autocomplete-menu list-unstyled',
     };
 
     // Autocomplete prototype
@@ -669,7 +644,6 @@
 
     proto._events = _events;
     proto._getDataInit = _getDataInit;
-    proto._getResultsCallbackInit = _getResultsCallbackInit;
     proto._getResultsInit = _getResultsInit;
     proto._render = _render;
     proto._renderInfo = _renderInfo;

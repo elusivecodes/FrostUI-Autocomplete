@@ -28,13 +28,15 @@
         const autocompleteEvents = $.findOne('#autocompleteEvents');
         const events = $.findOne('#events');
 
+        const sampleData = [
+            'Test 1',
+            'Test 2',
+            'Test 3',
+            'Test 4'
+        ];
+
         UI.Autocomplete.init(autocompleteEvents, {
-            data: [
-                'Test 1',
-                'Test 2',
-                'Test 3',
-                'Test 4'
-            ]
+            data: sampleData
         });
 
         $.addEvent(autocompleteEvents, 'change.ui.autocomplete show.ui.autocomplete shown.ui.autocomplete hide.ui.autocomplete hidden.ui.autocomplete', e => {

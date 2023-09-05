@@ -1,7 +1,7 @@
 import $ from '@fr0st/query';
 import { initComponent } from '@fr0st/ui';
 import Autocomplete from './autocomplete.js';
-import { _getDataInit, _getResultsCallbackInit, _getResultsInit } from './prototype/data.js';
+import { _getDataInit, _getResultsInit } from './prototype/data.js';
 import { _events } from './prototype/events.js';
 import { _render, _renderInfo, _renderItem, _renderResults } from './prototype/render.js';
 
@@ -13,15 +13,9 @@ Autocomplete.defaults = {
     },
     data: null,
     getResults: null,
-    getValue: (value) => $._isString(value) ?
-        value :
-        value.text,
-    renderResult(data) {
-        return this._options.getValue(data);
-    },
+    renderResult: (value) => value,
     sanitize: (input) => $.sanitize(input),
-    isMatch(data, term) {
-        const value = this._options.getValue(data);
+    isMatch(value, term) {
         const escapedTerm = $._escapeRegExp(term);
         const regExp = new RegExp(escapedTerm, 'i');
 
@@ -34,8 +28,8 @@ Autocomplete.defaults = {
         return regExp.test(normalized);
     },
     sortResults(a, b, term) {
-        const aLower = this._options.getValue(a).toLowerCase();
-        const bLower = this._options.getValue(b).toLowerCase();
+        const aLower = a.toLowerCase();
+        const bLower = b.toLowerCase();
 
         if (term) {
             const diff = aLower.indexOf(term) - bLower.indexOf(term);
@@ -66,8 +60,7 @@ Autocomplete.classes = {
     focus: 'focus',
     info: 'autocomplete-item text-body-secondary',
     item: 'autocomplete-item',
-    items: 'autocomplete-items',
-    menu: 'autocomplete-menu',
+    menu: 'autocomplete-menu list-unstyled',
 };
 
 // Autocomplete prototype
@@ -75,7 +68,6 @@ const proto = Autocomplete.prototype;
 
 proto._events = _events;
 proto._getDataInit = _getDataInit;
-proto._getResultsCallbackInit = _getResultsCallbackInit;
 proto._getResultsInit = _getResultsInit;
 proto._render = _render;
 proto._renderInfo = _renderInfo;

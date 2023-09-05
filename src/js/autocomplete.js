@@ -21,7 +21,6 @@ export default class Autocomplete extends BaseComponent {
         this._getResults = null;
 
         if (this._options.getResults) {
-            this._getResultsCallbackInit();
             this._getResultsInit();
         } else if (this._options.data) {
             this._data = this._options.data;
@@ -61,7 +60,6 @@ export default class Autocomplete extends BaseComponent {
         this._requests = null;
         this._popperOptions = null;
         this._getData = null;
-        this._getResults = null;
 
         super.dispose();
     }

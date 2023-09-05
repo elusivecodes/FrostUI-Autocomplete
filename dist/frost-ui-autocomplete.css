@@ -33,6 +33,7 @@
   color: var(--ui-autocomplete-item-color);
   text-align: inherit;
   white-space: nowrap;
+  cursor: default;
   background-color: transparent;
   border: 0;
 }
@@ -43,9 +44,6 @@
 .autocomplete-item.focus {
   color: var(--ui-autocomplete-item-focus-color);
   background-color: var(--ui-autocomplete-item-focus-bg);
-}
-.autocomplete-item:not(:disabled) {
-  cursor: default;
 }
 
 /*# sourceMappingURL=frost-ui-autocomplete.css.map */

@@ -36,6 +36,7 @@
     color: var(--ui-autocomplete-item-color);
     text-align: inherit;
     white-space: nowrap;
+    cursor: default;
     background-color: transparent;
     border: 0;
 
@@ -47,9 +48,5 @@
     &.focus {
         color: var(--ui-autocomplete-item-focus-color);
         background-color: var(--ui-autocomplete-item-focus-bg);
-    }
-
-    &:not(:disabled) {
-        cursor: default;
     }
 }

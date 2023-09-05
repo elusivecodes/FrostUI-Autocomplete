@@ -9,43 +9,24 @@ export function _getDataInit() {
         $.empty(this._menuNode);
         $.setAttribute(this._node, { 'aria-activedescendent': '' });
 
-        let results;
-
         // check for minimum search length
         if (this._options.minSearch && (!term || term.length < this._options.minSearch)) {
-            results = [];
-        } else {
-            const isMatch = this._options.isMatch.bind(this);
-            const sortResults = this._options.sortResults.bind(this);
-
-            // filter results
-            results = this._data.filter((data) => isMatch(data, term))
-                .sort((a, b) => sortResults(a, b, term));
+            $.hide(this._menuNode);
+            this.update();
+            return;
         }
+
+        $.show(this._menuNode);
+
+        const isMatch = this._options.isMatch.bind(this);
+        const sortResults = this._options.sortResults.bind(this);
+
+        // filter results
+        const results = this._data.filter((value) => isMatch(value, term))
+            .sort((a, b) => sortResults(a, b, term));
 
         this._renderResults(results);
         this.update();
-    };
-};
-
-/**
- * Initialize get data callback.
- */
-export function _getResultsCallbackInit() {
-    this._getResults = (options) => {
-        // reset data for starting offset
-        if (!options.offset) {
-            this._data = [];
-        }
-
-        const request = Promise.resolve(this._options.getResults(options));
-
-        request.then((response) => {
-            this._data.push(...response.results);
-            this._showMore = response.showMore;
-        }).catch((_) => { });
-
-        return request;
     };
 };
 
@@ -60,20 +41,26 @@ export function _getResultsInit() {
             options.term = term;
         }
 
-        const request = this._getResults(options);
+        const request = Promise.resolve(this._options.getResults(options));
 
         request.then((response) => {
             if (this._request !== request) {
                 return;
             }
 
+            const newData = response.results;
+
             if (!offset) {
+                this._data = newData;
                 $.empty(this._menuNode);
             } else {
+                this._data.push(...newData);
                 $.detach(this._loader);
             }
 
-            this._renderResults(response.results);
+            this._showMore = response.showMore;
+
+            this._renderResults(newData);
 
             this._request = null;
         }).catch((_) => {
