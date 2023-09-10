@@ -4,7 +4,7 @@
   --ui-autocomplete-bg: var(--ui-body-bg);
   --ui-autocomplete-border-width: var(--ui-border-width);
   --ui-autocomplete-border-color: var(--ui-border-color);
-  --ui-autocomplete-item-padding-x: 1rem;
+  --ui-autocomplete-item-padding-x: 0.5rem;
   --ui-autocomplete-item-padding-y: 0.25rem;
   --ui-autocomplete-item-color: var(--ui-body-color);
   --ui-autocomplete-item-focus-color: var(--ui-primary-contrast);
@@ -17,7 +17,7 @@
   padding: 0;
   margin: 0;
   overflow-y: auto;
-  font-size: 1rem;
+  font-size: var(--ui-font-size);
   color: var(--ui-autocomplete-color);
   text-align: left;
   background-color: var(--ui-autocomplete-bg);
@@ -44,6 +44,12 @@
 .autocomplete-item.focus {
   color: var(--ui-autocomplete-item-focus-color);
   background-color: var(--ui-autocomplete-item-focus-bg);
+}
+.autocomplete-menu-sm .autocomplete-item {
+  font-size: var(--ui-font-size-sm);
+}
+.autocomplete-menu-lg .autocomplete-item {
+  font-size: var(--ui-font-size-lg);
 }
 
 /*# sourceMappingURL=frost-ui-autocomplete.css.map */

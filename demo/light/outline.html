@@ -44,9 +44,35 @@
             </div>
         </div>
         <div class="mb-4">
+            <label for="autocompleteDisabled">Disabled</label>
+            <div class="form-input">
+                <input class="input-outline" id="autocompleteDisabled" type="text" placeholder="Placeholder" autocomplete="off" disabled />
+            </div>
+        </div>
+        <div class="mb-4">
+            <label for="autocompleteReadonly">Readonly</label>
+            <div class="form-input">
+                <input class="input-outline" id="autocompleteReadonly" type="text" placeholder="Placeholder" autocomplete="off" readonly />
+            </div>
+        </div>
+        <div class="mb-4">
             <label for="autocompleteDiacratics">Diacratics</label>
             <div class="form-input">
                 <input class="input-outline" id="autocompleteDiacratics" type="text" placeholder="Placeholder" autocomplete="off" />
+            </div>
+        </div>
+
+        <h4>Sizes</h4>
+        <div class="mb-4">
+            <label for="autocompleteSmall">Small</label>
+            <div class="form-input">
+                <input class="input-outline input-sm" id="autocompleteSmall" type="text" placeholder="Placeholder" autocomplete="off" />
+            </div>
+        </div>
+        <div class="mb-4">
+            <label for="autocompleteLarge">Large</label>
+            <div class="form-input">
+                <input class="input-outline input-lg" id="autocompleteLarge" type="text" placeholder="Placeholder" autocomplete="off" />
             </div>
         </div>
 
@@ -81,6 +107,8 @@
         const autocompleteSpinner = $.findOne('#autocompleteSpinner');
         const autocompleteInfinite = $.findOne('#autocompleteInfinite');
         const autocompleteRender = $.findOne('#autocompleteRender');
+        const autocompleteDisabled = $.findOne('#autocompleteDisabled');
+        const autocompleteReadonly = $.findOne('#autocompleteReadonly');
         const autocompleteDiacratics = $.findOne('#autocompleteDiacratics');
         const autocompleteModal = $.findOne('#autocompleteModal');
 
@@ -161,6 +189,14 @@
             renderResult: value => `<span class="badge text-bg-info">${value}</span>`
         });
 
+        UI.Autocomplete.init(autocompleteDisabled, {
+            data: sampleData
+        });
+
+        UI.Autocomplete.init(autocompleteReadonly, {
+            data: sampleData
+        });
+
         UI.Autocomplete.init(autocompleteDiacratics, {
             data: [
                 'Tèst 1',
@@ -168,6 +204,14 @@
                 'Tèst 3',
                 'Tèst 4',
             ]
+        });
+
+        UI.Autocomplete.init(autocompleteSmall, {
+            data: sampleData
+        });
+
+        UI.Autocomplete.init(autocompleteLarge, {
+            data: sampleData
         });
 
         UI.Autocomplete.init(autocompleteModal, {

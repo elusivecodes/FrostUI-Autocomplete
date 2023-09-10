@@ -304,7 +304,7 @@
             this.hide();
         });
 
-        $.addEventDelegate(this._menuNode, 'mouseup.ui.autocomplete', '[data-ui-action="select"]', (e) => {
+        $.addEventDelegate(this._menuNode, 'click.ui.autocomplete', '[data-ui-action="select"]', (e) => {
             e.preventDefault();
 
             const value = $.getDataset(e.currentTarget, 'uiValue');
@@ -340,26 +340,28 @@
         }));
 
         $.addEvent(this._node, 'keydown.ui.autocomplete', (e) => {
-            if (!['ArrowDown', 'ArrowUp', 'Enter'].includes(e.code)) {
+            if (!['ArrowDown', 'ArrowUp', 'Enter', 'NumpadEnter'].includes(e.code)) {
                 return;
             }
 
             const focusedNode = $.findOne('[data-ui-focus]', this._menuNode);
 
-            if (e.code === 'Enter') {
-                // select the focused item
-                if (focusedNode) {
-                    const value = $.getDataset(focusedNode, 'uiValue');
+            switch (e.code) {
+                case 'Enter':
+                case 'NumpadEnter':
+                    // select the focused item
+                    if (focusedNode) {
+                        const value = $.getDataset(focusedNode, 'uiValue');
 
-                    if (value !== $.getValue(this._node)) {
-                        $.setValue(this._node, value);
-                        $.triggerEvent(this._node, 'change.ui.autocomplete');
+                        if (value !== $.getValue(this._node)) {
+                            $.setValue(this._node, value);
+                            $.triggerEvent(this._node, 'change.ui.autocomplete');
+                        }
+
+                        this.hide();
                     }
 
-                    this.hide();
-                }
-
-                return;
+                    return;
             }
 
             e.preventDefault();
@@ -465,6 +467,12 @@
                 role: 'listbox',
             },
         });
+
+        if ($.is(this._node, '.input-sm')) {
+            $.addClass(this._menuNode, this.constructor.classes.menuSmall);
+        } else if ($.is(this._node, '.input-lg')) {
+            $.addClass(this._menuNode, this.constructor.classes.menuLarge);
+        }
 
         if (this._options.getResults) {
             this._loader = this._renderInfo(this._options.lang.loading);
@@ -621,6 +629,7 @@
         debounce: 250,
         duration: 100,
         maxHeight: '250px',
+        menuSize: null,
         appendTo: null,
         fullWidth: false,
         placement: 'bottom',
@@ -637,6 +646,8 @@
         info: 'autocomplete-item text-body-secondary',
         item: 'autocomplete-item',
         menu: 'autocomplete-menu list-unstyled',
+        menuSmall: 'autocomplete-menu-sm',
+        menuLarge: 'autocomplete-menu-lg',
     };
 
     // Autocomplete prototype

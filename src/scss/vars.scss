@@ -1,12 +1,15 @@
 // autocomplete
 $autocomplete-z-index: 1000 !default;
-$autocomplete-font-size: 1rem !default;
+$autocomplete-font-size: var(--ui-font-size) !default;
 $autocomplete-color: var(--ui-body-color) !default;
 $autocomplete-bg: var(--ui-body-bg) !default;
 $autocomplete-border-width: var(--ui-border-width) !default;
 $autocomplete-border-color: var(--ui-border-color) !default;
 
-$autocomplete-item-padding-x: 1rem !default;
+$autocomplete-sm-font-size: var(--ui-font-size-sm) !default;
+$autocomplete-lg-font-size: var(--ui-font-size-lg) !default;
+
+$autocomplete-item-padding-x: .5rem !default;
 $autocomplete-item-padding-y: .25rem !default;
 $autocomplete-item-font-weight: 400 !default;
 $autocomplete-item-color: var(--ui-body-color) !default;

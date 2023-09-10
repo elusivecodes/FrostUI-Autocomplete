@@ -25,7 +25,7 @@ export function _events() {
         this.hide();
     });
 
-    $.addEventDelegate(this._menuNode, 'mouseup.ui.autocomplete', '[data-ui-action="select"]', (e) => {
+    $.addEventDelegate(this._menuNode, 'click.ui.autocomplete', '[data-ui-action="select"]', (e) => {
         e.preventDefault();
 
         const value = $.getDataset(e.currentTarget, 'uiValue');
@@ -61,26 +61,28 @@ export function _events() {
     }));
 
     $.addEvent(this._node, 'keydown.ui.autocomplete', (e) => {
-        if (!['ArrowDown', 'ArrowUp', 'Enter'].includes(e.code)) {
+        if (!['ArrowDown', 'ArrowUp', 'Enter', 'NumpadEnter'].includes(e.code)) {
             return;
         }
 
         const focusedNode = $.findOne('[data-ui-focus]', this._menuNode);
 
-        if (e.code === 'Enter') {
-            // select the focused item
-            if (focusedNode) {
-                const value = $.getDataset(focusedNode, 'uiValue');
+        switch (e.code) {
+            case 'Enter':
+            case 'NumpadEnter':
+                // select the focused item
+                if (focusedNode) {
+                    const value = $.getDataset(focusedNode, 'uiValue');
 
-                if (value !== $.getValue(this._node)) {
-                    $.setValue(this._node, value);
-                    $.triggerEvent(this._node, 'change.ui.autocomplete');
+                    if (value !== $.getValue(this._node)) {
+                        $.setValue(this._node, value);
+                        $.triggerEvent(this._node, 'change.ui.autocomplete');
+                    }
+
+                    this.hide();
                 }
 
-                this.hide();
-            }
-
-            return;
+                return;
         }
 
         e.preventDefault();

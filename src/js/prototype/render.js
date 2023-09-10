@@ -16,6 +16,12 @@ export function _render() {
         },
     });
 
+    if ($.is(this._node, '.input-sm')) {
+        $.addClass(this._menuNode, this.constructor.classes.menuSmall);
+    } else if ($.is(this._node, '.input-lg')) {
+        $.addClass(this._menuNode, this.constructor.classes.menuLarge);
+    }
+
     if (this._options.getResults) {
         this._loader = this._renderInfo(this._options.lang.loading);
         this._error = this._renderInfo(this._options.lang.error);

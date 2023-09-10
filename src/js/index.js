@@ -45,6 +45,7 @@ Autocomplete.defaults = {
     debounce: 250,
     duration: 100,
     maxHeight: '250px',
+    menuSize: null,
     appendTo: null,
     fullWidth: false,
     placement: 'bottom',
@@ -61,6 +62,8 @@ Autocomplete.classes = {
     info: 'autocomplete-item text-body-secondary',
     item: 'autocomplete-item',
     menu: 'autocomplete-menu list-unstyled',
+    menuSmall: 'autocomplete-menu-sm',
+    menuLarge: 'autocomplete-menu-lg',
 };
 
 // Autocomplete prototype

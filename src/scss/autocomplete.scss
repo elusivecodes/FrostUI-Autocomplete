@@ -49,4 +49,12 @@
         color: var(--ui-autocomplete-item-focus-color);
         background-color: var(--ui-autocomplete-item-focus-bg);
     }
+
+    .autocomplete-menu-sm & {
+        font-size: $autocomplete-sm-font-size;
+    }
+
+    .autocomplete-menu-lg & {
+        font-size: $autocomplete-lg-font-size;
+    }
 }
