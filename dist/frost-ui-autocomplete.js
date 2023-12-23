@@ -45,7 +45,6 @@
 
             $.remove(this._menuNode);
             $.removeEvent(this._node, 'keydown.ui.autocomplete');
-            $.removeEvent(this._node, 'keyup.ui.autocomplete');
             $.removeEvent(this._node, 'input.ui.autocomplete');
             $.removeEvent(this._node, 'blur.ui.autocomplete');
             $.removeAttribute(this._node, 'role');
