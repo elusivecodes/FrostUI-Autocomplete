@@ -340,7 +340,7 @@
         }));
 
         $.addEvent(this._node, 'keydown.ui.autocomplete', (e) => {
-            if (!['ArrowDown', 'ArrowUp', 'Enter', 'NumpadEnter'].includes(e.code)) {
+            if (!['ArrowDown', 'ArrowUp', 'Enter', 'Escape', 'NumpadEnter'].includes(e.code)) {
                 return;
             }
 
@@ -357,6 +357,15 @@
                             $.setValue(this._node, value);
                             $.triggerEvent(this._node, 'change.ui.autocomplete');
                         }
+
+                        this.hide();
+                    }
+
+                    return;
+                case 'Escape':
+                    if ($.isConnected(this._menuNode)) {
+                        // prevent node from closing modal
+                        e.stopPropagation();
 
                         this.hide();
                     }
@@ -418,17 +427,6 @@
             } else if (nodeRect.bottom > itemsRect.bottom) {
                 $.setScrollY(this._menuNode, itemsScrollY + nodeRect.bottom - itemsRect.bottom);
             }
-        });
-
-        $.addEvent(this._node, 'keyup.ui.autocomplete', (e) => {
-            if (e.code !== 'Escape' || !$.isConnected(this._menuNode)) {
-                return;
-            }
-
-            // prevent node from closing modal
-            e.stopPropagation();
-
-            this.hide();
         });
 
         if (this._options.getResults) {
