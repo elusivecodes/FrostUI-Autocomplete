@@ -1,6 +1,6 @@
 {
     "name": "@fr0st/ui-autocomplete",
-    "version": "3.1.5",
+    "version": "3.1.6",
     "description": "FrostUI-Autocomplete is a free, open-source Autocomplete component for Javascript.",
     "keywords": [
         "ui",
@@ -19,8 +19,8 @@
     "type": "module",
     "files": [
         "dist",
-        "/LICENSE",
-        "/README.md",
+        "LICENSE",
+        "README.md",
         "src"
     ],
     "scripts": {
