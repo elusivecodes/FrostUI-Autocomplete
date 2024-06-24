@@ -1,6 +1,6 @@
 {
     "name": "@fr0st/ui-autocomplete",
-    "version": "3.1.4",
+    "version": "3.1.5",
     "description": "FrostUI-Autocomplete is a free, open-source Autocomplete component for Javascript.",
     "keywords": [
         "ui",
@@ -44,13 +44,12 @@
     "license": "MIT",
     "private": false,
     "devDependencies": {
-        "@fr0st/eslint-config": "^1.0.0",
-        "@fr0st/stylelint-config": "^1.0.4",
+        "@fr0st/eslint-config": "^1.0.2",
+        "@fr0st/stylelint-config": "^1.0.6",
         "@rollup/plugin-node-resolve": "^15.2.3",
         "autoprefixer": "^10.4.19",
         "clean-css-cli": "^5.6.3",
         "eslint": "^9.5.0",
-        "eslint-config-google": "^0.14.0",
         "find-unused-sass-variables": "^6.0.0",
         "postcss": "^8.4.38",
         "postcss-cli": "^11.0.0",
