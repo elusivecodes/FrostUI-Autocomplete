@@ -28,10 +28,10 @@
 }
 
 .autocomplete-item {
+    clear: both;
     display: block;
     width: 100%;
     padding: var(--ui-autocomplete-item-padding-y) var(--ui-autocomplete-item-padding-x);
-    clear: both;
     font-weight: $autocomplete-item-font-weight;
     color: var(--ui-autocomplete-item-color);
     text-align: inherit;
